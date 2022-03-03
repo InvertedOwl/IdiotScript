@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class Component extends java.awt.Component {
 
     public static ArrayList<BlockBlock> blockArrayList = new ArrayList<BlockBlock>();
+    public static ArrayList<String>
 
     public void paint(Graphics graphics) {
         graphics.setColor(Color.DARK_GRAY);
