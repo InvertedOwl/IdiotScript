@@ -17,8 +17,15 @@ public class Component extends java.awt.Component {
         graphics.setColor(Color.DARK_GRAY.darker());
         graphics.fillRect(0, getHeight() - 200, getWidth(),200);
 
-        if (MouseListener.heldBlock != null){
-            MouseListener.heldBlock.setPosition(getMousePosition());
+        if (MouseListener.heldBlockBlock != null){
+            for (int i = 0; i < MouseListener.heldBlockBlock.getBlocks().size(); i++) {
+                Block block = MouseListener.heldBlockBlock.getBlocks().get(i);
+                Point point = getMousePosition();
+                point.setLocation(point.x + (i * 75), point.y);
+
+                block.setPosition(point);
+            }
+
         }
 
         paintBlocks(graphics);

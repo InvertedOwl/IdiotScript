@@ -2,7 +2,7 @@ package com.wesley.block;
 
 import java.util.ArrayList;
 
-public class BlockBlock extends Thread {
+public class BlockBlock implements Runnable {
     private ArrayList<Block> blocks;
     public BlockBlock(ArrayList<Block> blocks) {
         this.blocks = blocks;
@@ -13,8 +13,17 @@ public class BlockBlock extends Thread {
         blocks.add(block);
     }
 
+    public BlockBlock() {
+        this.blocks = new ArrayList<>();
+    }
+
     public void run() {
         for (Block block : blocks) {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             block.getActions().trigger();
         }
     }

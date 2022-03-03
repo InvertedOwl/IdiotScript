@@ -7,6 +7,7 @@ import com.wesley.block.BlockType;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Random;
 
 
 public class Main {
@@ -24,44 +25,42 @@ public class Main {
         frame.add(render);
         render.paint(frame.getGraphics());
         render.repaint();
-        frame.addMouseListener(new MouseListener());
+        MouseListener mouseListener = new MouseListener();
+        frame.addMouseListener(mouseListener);
+        frame.addKeyListener(mouseListener);
+
+        makeRandomBlocks(6);
+        makeRandomBlocks(3);
+
+    }
+
+    public static void makeRandomBlocks(int num) {
+        BlockBlock blockBlock = new BlockBlock();
 
 
+        for (int i = 0; i < num; i++) {
+            Random random = new Random();
+            BlockType type = BlockType.values()[random.nextInt(BlockType.values().length)];
+            BlockAction action = new BlockAction() {
+                @Override
+                public void trigger(Object... params) {
 
-        Block block = new Block(new BlockAction() {
-            @Override
-            public void trigger(Object... params) {
+                }
+            };
 
-            }
-        }, BlockType.Event, new Point(50, 50));
 
-        Component.blockArrayList.add(new BlockBlock(block));
+            if (i == 0) type = BlockType.Event;
+            if (i == 1) action = new BlockAction() {
+                @Override
+                public void trigger(Object... params) {
+                    System.out.println("I was triggered!");
+                }
+            };
 
-        Block block2 = new Block(new BlockAction() {
-            @Override
-            public void trigger(Object... params) {
+            blockBlock.getBlocks().add(new Block(action, type, new Point(50 + (i * 75), 60)));
+        }
 
-            }
-        }, BlockType.Event, new Point(50, 50));
 
-        Component.blockArrayList.add(new BlockBlock(block2));
-
-        Block block3 = new Block(new BlockAction() {
-            @Override
-            public void trigger(Object... params) {
-
-            }
-        }, BlockType.Operation, new Point(50, 50));
-
-        Component.blockArrayList.add(new BlockBlock(block3));
-
-        Block block4 = new Block(new BlockAction() {
-            @Override
-            public void trigger(Object... params) {
-
-            }
-        }, BlockType.Variable, new Point(50, 50));
-
-        Component.blockArrayList.add(new BlockBlock(block4));
+        Component.blockArrayList.add(blockBlock);
     }
 }
