@@ -45,6 +45,7 @@ public class Component extends java.awt.Component {
                     default -> graphics.setColor(Color.WHITE);
                 }
 
+                if (block.isActive()) graphics.setColor(Color.WHITE);
                 graphics.fillRoundRect((int) block.getPosition().getX() - (70/2), (int) block.getPosition().getY() - (70/2), 70, 70, 16, 16);
             }
         }

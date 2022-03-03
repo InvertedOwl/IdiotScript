@@ -95,7 +95,8 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener 
         if (e.getKeyChar() == ' '){
             for (BlockBlock b : Component.blockArrayList) {
                 if (b.getBlocks().get(0).getType().equals(BlockType.Event)) {
-                    b.run();
+                    Thread thread = new Thread(b);
+                    thread.start();
                 }
             }
         }

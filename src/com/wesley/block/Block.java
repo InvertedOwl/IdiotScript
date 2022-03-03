@@ -6,6 +6,7 @@ public class Block {
     private BlockAction actions;
     private BlockType type;
     private Point position;
+    private boolean isActive = false;
 
     public Block(BlockAction actions, BlockType type, Point position) {
         this.actions = actions;
@@ -38,5 +39,13 @@ public class Block {
 
     public void setPosition(Point position) {
         this.position = position;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
+    public boolean isActive() {
+        return isActive;
     }
 }

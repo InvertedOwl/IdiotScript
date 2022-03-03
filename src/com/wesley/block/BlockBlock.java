@@ -17,15 +17,25 @@ public class BlockBlock implements Runnable {
         this.blocks = new ArrayList<>();
     }
 
+    @Override
     public void run() {
-        for (Block block : blocks) {
+        for (int i = 0; i < blocks.size() - 1; i++) {
+            Block block = blocks.get(i + 1);
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+            blocks.get(i).setActive(false);
+            block.setActive(true);
             block.getActions().trigger();
         }
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        blocks.get(blocks.size() - 1).setActive(false);
     }
 
     public ArrayList<Block> getBlocks() {

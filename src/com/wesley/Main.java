@@ -48,9 +48,9 @@ public class Main {
                 }
             };
 
-
+            while (type == BlockType.Event) type = BlockType.values()[random.nextInt(BlockType.values().length)];
             if (i == 0) type = BlockType.Event;
-            if (i == 1) action = new BlockAction() {
+            if (type == BlockType.Operation) action = new BlockAction() {
                 @Override
                 public void trigger(Object... params) {
                     System.out.println("I was triggered!");
