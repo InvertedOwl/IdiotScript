@@ -6,12 +6,14 @@ public class Block {
     private BlockAction actions;
     private BlockType type;
     private Point position;
+    private String name;
     private boolean isActive = false;
 
-    public Block(BlockAction actions, BlockType type, Point position) {
+    public Block(BlockAction actions, BlockType type, Point position, String name) {
         this.actions = actions;
         this.type = type;
         this.position = position;
+        this.name = name;
     }
 
     public Block(BlockAction actions) {
@@ -47,5 +49,13 @@ public class Block {
 
     public boolean isActive() {
         return isActive;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

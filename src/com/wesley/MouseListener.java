@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 
 public class MouseListener implements java.awt.event.MouseListener, KeyListener {
     public static BlockBlock heldBlockBlock;
+    public static boolean selectMode;
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -19,33 +20,49 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener 
 
     @Override
     public void mousePressed(MouseEvent e) {
-        for (int i = 0; i < Component.blockArrayList.size(); i++) {
-            BlockBlock blockBlock = Component.blockArrayList.get(i);
-            for (int j = 0; j < blockBlock.getBlocks().size(); j++) {
-                Block block = blockBlock.getBlocks().get(j);
+        if (e.getButton() != 3 && !selectMode) {
 
-                if (inBounds(block.getPosition(), e.getPoint())) {
-                    if (j == 0) {
-                        heldBlockBlock = blockBlock;
-                    } else {
-                        BlockBlock newBlockBlock = new BlockBlock();
-                        Component.blockArrayList.add(newBlockBlock);
+            for (int i = 0; i < Component.blockArrayList.size(); i++) {
+                BlockBlock blockBlock = Component.blockArrayList.get(i);
+                for (int j = 0; j < blockBlock.getBlocks().size(); j++) {
+                    Block block = blockBlock.getBlocks().get(j);
 
-                        for (int k = j; k < blockBlock.getBlocks().size(); k++) {
-                            newBlockBlock.getBlocks().add(blockBlock.getBlocks().get(k));
-                            System.out.println(blockBlock.getBlocks().get(k));
+                    if (inBounds(block.getPosition(), e.getPoint())) {
+                        if (j == 0) {
+                            heldBlockBlock = blockBlock;
+                        } else {
+                            BlockBlock newBlockBlock = new BlockBlock();
+                            Component.blockArrayList.add(newBlockBlock);
+
+                            for (int k = j; k < blockBlock.getBlocks().size(); k++) {
+                                newBlockBlock.getBlocks().add(blockBlock.getBlocks().get(k));
+                                System.out.println(blockBlock.getBlocks().get(k));
+                            }
+
+                            for (int k = j; k < blockBlock.getBlocks().size(); k++) {
+                                blockBlock.getBlocks().remove(blockBlock.getBlocks().get(k));
+                                k--;
+                            }
+
+                            heldBlockBlock = newBlockBlock;
+
                         }
+                    }
 
-                        for (int k = j; k < blockBlock.getBlocks().size(); k++) {
-                            blockBlock.getBlocks().remove(blockBlock.getBlocks().get(k));
-                            k--;
-                        }
+                }
+            }
+        } else if (selectMode) {
+            selectMode = false;
+        } else {
+            for (int i = 0; i < Component.blockArrayList.size(); i++) {
+                BlockBlock blockBlock = Component.blockArrayList.get(i);
+                for (int j = 0; j < blockBlock.getBlocks().size(); j++) {
+                    Block block = blockBlock.getBlocks().get(j);
 
-                        heldBlockBlock = newBlockBlock;
-
+                    if (inBounds(block.getPosition(), e.getPoint())) {
+                        selectMode = true;
                     }
                 }
-
             }
         }
     }
@@ -57,6 +74,7 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener 
 
     @Override
     public void mouseReleased(MouseEvent e) {
+
         for (int j = 0; j < Component.blockArrayList.size(); j++) {
             BlockBlock blockBlock = Component.blockArrayList.get(j);
             Block iterBlock = blockBlock.getBlocks().get(blockBlock.getBlocks().size() - 1);

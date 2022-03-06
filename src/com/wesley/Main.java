@@ -1,9 +1,6 @@
 package com.wesley;
 
-import com.wesley.block.Block;
-import com.wesley.block.BlockAction;
-import com.wesley.block.BlockBlock;
-import com.wesley.block.BlockType;
+import com.wesley.block.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,6 +11,8 @@ public class Main {
 
 
     public static void main(String[] args) {
+        BlockList.initilizeBlocks();
+
         JFrame frame = new JFrame("Block Coding");
         frame.setSize(1011, 1011);
         frame.setVisible(true);
@@ -28,6 +27,7 @@ public class Main {
         MouseListener mouseListener = new MouseListener();
         frame.addMouseListener(mouseListener);
         frame.addKeyListener(mouseListener);
+        ConsoleManager.addToConsole("");
 
         makeRandomBlocks(6);
         makeRandomBlocks(3);
@@ -36,28 +36,17 @@ public class Main {
 
     public static void makeRandomBlocks(int num) {
         BlockBlock blockBlock = new BlockBlock();
-
+        Random random = new Random();
 
         for (int i = 0; i < num; i++) {
-            Random random = new Random();
-            BlockType type = BlockType.values()[random.nextInt(BlockType.values().length)];
-            BlockAction action = new BlockAction() {
-                @Override
-                public void trigger(Object... params) {
+            Block block = BlockList.blocks.get(random.nextInt(BlockList.blocks.size()));
+            while (block.getType() == BlockType.Event) {
+                block = BlockList.blocks.get(random.nextInt(BlockList.blocks.size()));
+            }
 
-                }
-            };
+            if (i == 0) block = BlockList.blocks.get(1);
 
-            while (type == BlockType.Event) type = BlockType.values()[random.nextInt(BlockType.values().length)];
-            if (i == 0) type = BlockType.Event;
-            if (type == BlockType.Operation) action = new BlockAction() {
-                @Override
-                public void trigger(Object... params) {
-                    System.out.println("I was triggered!");
-                }
-            };
-
-            blockBlock.getBlocks().add(new Block(action, type, new Point(50 + (i * 75), 60)));
+            blockBlock.getBlocks().add(new Block(block.getActions(), block.getType(), new Point(50 + (i * 75), 60), block.getName()));
         }
 
 

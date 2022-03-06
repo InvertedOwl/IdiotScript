@@ -1,9 +1,9 @@
 package com.wesley.block;
 
 public enum BlockType {
-    Event,
-    Trigger,
-    Operation,
-    Draw,
-    Variable
+    Event, // Green
+    Trigger, // Blue
+    Operation, // Red
+    Draw, // Yellow
+    Variable // Cyan
 }
