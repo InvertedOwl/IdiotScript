@@ -15,6 +15,7 @@ public class BlockBlock implements Runnable {
 
     public BlockBlock() {
         this.blocks = new ArrayList<>();
+        System.out.println("block block constructor");
     }
 
     @Override
@@ -28,7 +29,7 @@ public class BlockBlock implements Runnable {
             }
             blocks.get(i).setActive(false);
             block.setActive(true);
-            block.getActions().trigger();
+            block.setReturns(block.getActions().trigger(block));
         }
         try {
             Thread.sleep(500);

@@ -1,5 +1,7 @@
 package com.wesley.block;
 
+import java.util.ArrayList;
+
 public interface BlockAction {
-    void trigger(Object... params);
+    ArrayList<String> trigger(Block block, Object... params);
 }

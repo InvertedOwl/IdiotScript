@@ -1,19 +1,27 @@
 package com.wesley.block;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Block {
     private BlockAction actions;
     private BlockType type;
     private Point position;
     private String name;
+    private int numArguments;
+    private boolean manualInput;
+    private ArrayList<Block> arguments = new ArrayList<>();
+    private ArrayList<String> returns = new ArrayList<>();
+
     private boolean isActive = false;
 
-    public Block(BlockAction actions, BlockType type, Point position, String name) {
+    public Block(BlockAction actions, BlockType type, Point position, String name, int numArguments, boolean manualInput) {
         this.actions = actions;
         this.type = type;
         this.position = position;
         this.name = name;
+        this.numArguments = numArguments;
+        this.manualInput = manualInput;
     }
 
     public Block(BlockAction actions) {
@@ -57,5 +65,38 @@ public class Block {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public ArrayList<String> getReturns() {
+        return returns;
+    }
+
+    public void setReturns(ArrayList<String> returns) {
+        this.returns = returns;
+    }
+
+    public void setArguments(ArrayList<Block> arguments) {
+        this.arguments = arguments;
+        System.out.println("Arguments set to " + arguments);
+    }
+
+    public ArrayList<Block> getArguments() {
+        return arguments;
+    }
+
+    public int getNumArguments() {
+        return numArguments;
+    }
+
+    public void setNumArguments(int numArguments) {
+        this.numArguments = numArguments;
+    }
+
+    public boolean isManualInput() {
+        return manualInput;
+    }
+
+    public void setManualInput(boolean manualInput) {
+        this.manualInput = manualInput;
     }
 }

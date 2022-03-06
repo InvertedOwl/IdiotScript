@@ -9,6 +9,7 @@ import java.util.Random;
 
 public class Main {
 
+    public static Component component;
 
     public static void main(String[] args) {
         BlockList.initilizeBlocks();
@@ -27,7 +28,8 @@ public class Main {
         MouseListener mouseListener = new MouseListener();
         frame.addMouseListener(mouseListener);
         frame.addKeyListener(mouseListener);
-        ConsoleManager.addToConsole("");
+        ConsoleManager.addToConsole("", null);
+        Main.component = render;
 
         makeRandomBlocks(6);
         makeRandomBlocks(3);
@@ -46,7 +48,7 @@ public class Main {
 
             if (i == 0) block = BlockList.blocks.get(1);
 
-            blockBlock.getBlocks().add(new Block(block.getActions(), block.getType(), new Point(50 + (i * 75), 60), block.getName()));
+            blockBlock.getBlocks().add(new Block(block.getActions(), block.getType(), new Point(50 + (i * 75), 60), block.getName(), block.getNumArguments(), block.isManualInput()));
         }
 
 

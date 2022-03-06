@@ -4,14 +4,17 @@ import com.wesley.block.Block;
 import com.wesley.block.BlockBlock;
 import com.wesley.block.BlockType;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 public class MouseListener implements java.awt.event.MouseListener, KeyListener {
     public static BlockBlock heldBlockBlock;
     public static boolean selectMode;
+    public static Block selectBlock;
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -36,7 +39,6 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener 
 
                             for (int k = j; k < blockBlock.getBlocks().size(); k++) {
                                 newBlockBlock.getBlocks().add(blockBlock.getBlocks().get(k));
-                                System.out.println(blockBlock.getBlocks().get(k));
                             }
 
                             for (int k = j; k < blockBlock.getBlocks().size(); k++) {
@@ -53,18 +55,39 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener 
             }
         } else if (selectMode) {
             selectMode = false;
+            Block block = boundsWith(e.getPoint());
+            if (block != null) {
+                System.out.println("Block `" + selectBlock.getName() + "` has set its arguments to `" + block.getName() + "`");
+                System.out.println(block.getReturns());
+                ArrayList<Block> blockArrayList = new ArrayList<>();
+                blockArrayList.add(block);
+                selectBlock.setArguments(blockArrayList);
+            }
         } else {
-            for (int i = 0; i < Component.blockArrayList.size(); i++) {
-                BlockBlock blockBlock = Component.blockArrayList.get(i);
-                for (int j = 0; j < blockBlock.getBlocks().size(); j++) {
-                    Block block = blockBlock.getBlocks().get(j);
 
-                    if (inBounds(block.getPosition(), e.getPoint())) {
-                        selectMode = true;
-                    }
+            Block block = boundsWith(e.getPoint());
+            if (block != null && !block.isManualInput()) {
+                selectMode = true;
+                selectBlock = block;
+            } else if (block != null){
+                String name = JOptionPane.showInputDialog(Main.component,
+                        "What is your name?", null);
+            }
+        }
+    }
+
+    public Block boundsWith(Point e){
+        for (int i = 0; i < Component.blockArrayList.size(); i++) {
+            BlockBlock blockBlock = Component.blockArrayList.get(i);
+            for (int j = 0; j < blockBlock.getBlocks().size(); j++) {
+                Block block = blockBlock.getBlocks().get(j);
+
+                if (inBounds(block.getPosition(), e)) {
+                    return block;
                 }
             }
         }
+        return null;
     }
 
     public boolean inBounds(Point block, Point mouse) {
@@ -80,7 +103,6 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener 
             Block iterBlock = blockBlock.getBlocks().get(blockBlock.getBlocks().size() - 1);
             if (heldBlockBlock != null) {
                 if (heldBlockBlock.getBlocks().get(0).getPosition().distance(iterBlock.getPosition().x, iterBlock.getPosition().y) <= 85 && heldBlockBlock.getBlocks().get(0).getPosition().distance(iterBlock.getPosition().x, iterBlock.getPosition().y) != 0) {
-                    System.out.println(heldBlockBlock.getBlocks().get(0).getPosition().distance(iterBlock.getPosition().x, iterBlock.getPosition().y));
                     heldBlockBlock.getBlocks().get(0).setPosition((Point) iterBlock.getPosition().clone());
                     heldBlockBlock.getBlocks().get(0).getPosition().x = heldBlockBlock.getBlocks().get(0).getPosition().x + 75;
 
@@ -88,7 +110,6 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener 
                     if (!blockBlock.equals(heldBlockBlock)) {
                         for (int i = 0; i < heldBlockBlock.getBlocks().size(); i++) {
                             blockBlock.getBlocks().add(heldBlockBlock.getBlocks().get(i));
-                            System.out.println("ono");
                         }
                     }
                 }
@@ -111,6 +132,9 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener 
     @Override
     public void keyTyped(KeyEvent e) {
         if (e.getKeyChar() == ' '){
+            VariableManager.clearVariables();
+            ConsoleManager.addToConsole("");
+            ConsoleManager.addToConsole("Starting..");
             for (BlockBlock b : Component.blockArrayList) {
                 if (b.getBlocks().get(0).getType().equals(BlockType.Event)) {
                     Thread thread = new Thread(b);

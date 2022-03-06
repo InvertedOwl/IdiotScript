@@ -6,6 +6,9 @@ public class VariableManager {
     public static HashMap<String, Object> variables = new HashMap<String, Object>();
     public static void addVariable (String name, Object value){
         variables.put(name, value);
-        System.out.println("put");
+    }
+
+    public static void clearVariables () {
+        variables = new HashMap<>();
     }
 }
