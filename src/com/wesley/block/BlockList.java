@@ -25,10 +25,14 @@ public class BlockList {
         print_var.setActions((block, params) -> {
 
             if (block.getArguments().size() != 0) {
-                if (block.getArguments().get(0).getReturns() != null) {
-                    Object variable = VariableManager.variables.get(block.getArguments().get(0).getReturns().get(0));
-                    ConsoleManager.addToConsole(String.valueOf(variable), block);
-                    return null;
+                if (block.getArguments().get(0) instanceof Block) {
+                    if (((Block) block.getArguments().get(0)).getReturns() != null) {
+                        Object variable = VariableManager.variables.get(((Block) block.getArguments().get(0)).getReturns().get(0));
+                        ConsoleManager.addToConsole(String.valueOf(variable), block);
+                        return null;
+                    }
+                } else {
+                    ConsoleManager.addToConsole(String.valueOf(block.getArguments().get(0)), block);
                 }
             }
 
@@ -41,11 +45,14 @@ public class BlockList {
 
         Block new_var = new Block(null, BlockType.Variable, new Point(1011/2, 1011),
                 "New Variable", 0, true);
+
+
         new_var.setActions((block, params) -> {
-            VariableManager.addVariable("Variable", true);
+            System.out.println(new_var.getArguments());
+            VariableManager.addVariable("Variable", new_var.getArguments().get(0));
             ArrayList<String> returns = new ArrayList<>();
-            new_var.setReturns(returns);
             returns.add("Variable");
+            new_var.setReturns(returns);
 
             return returns;
         });

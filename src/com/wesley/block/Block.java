@@ -10,7 +10,7 @@ public class Block {
     private String name;
     private int numArguments;
     private boolean manualInput;
-    private ArrayList<Block> arguments = new ArrayList<>();
+    private ArrayList<Object> arguments = new ArrayList<>();
     private ArrayList<String> returns = new ArrayList<>();
 
     private boolean isActive = false;
@@ -75,12 +75,12 @@ public class Block {
         this.returns = returns;
     }
 
-    public void setArguments(ArrayList<Block> arguments) {
+    public void setArguments(ArrayList<Object> arguments) {
         this.arguments = arguments;
         System.out.println("Arguments set to " + arguments);
     }
 
-    public ArrayList<Block> getArguments() {
+    public ArrayList<Object> getArguments() {
         return arguments;
     }
 

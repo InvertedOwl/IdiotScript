@@ -59,7 +59,7 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener 
             if (block != null) {
                 System.out.println("Block `" + selectBlock.getName() + "` has set its arguments to `" + block.getName() + "`");
                 System.out.println(block.getReturns());
-                ArrayList<Block> blockArrayList = new ArrayList<>();
+                ArrayList<Object> blockArrayList = new ArrayList<>();
                 blockArrayList.add(block);
                 selectBlock.setArguments(blockArrayList);
             }
@@ -70,8 +70,13 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener 
                 selectMode = true;
                 selectBlock = block;
             } else if (block != null){
-                String name = JOptionPane.showInputDialog(Main.component,
-                        "What is your name?", null);
+                String value = JOptionPane.showInputDialog(Main.component,
+                        "vALUE??", null);
+
+                ArrayList<Object> objects = new ArrayList<>();
+                objects.add(value);
+                System.out.println("Arguments of " +  block.getName() + " set to " + objects);
+                block.setArguments(objects);
             }
         }
     }
