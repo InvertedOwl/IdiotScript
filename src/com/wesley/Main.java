@@ -31,10 +31,26 @@ public class Main {
         ConsoleManager.addToConsole("", null);
         Main.component = render;
 
-        makeRandomBlocks(6);
-        makeRandomBlocks(3);
+        makeAllBlocks();
 
+        makeRandomBlocks(6);
     }
+
+    public static void makeAllBlocks() {
+        BlockBlock blockBlock = new BlockBlock();
+
+        for (int i = 0; i < BlockList.blocks.size() - 1; i++) {
+            Block block = BlockList.blocks.get(i);
+
+            if (i == 0) block = BlockList.blocks.get(1);
+
+            blockBlock.getBlocks().add(new Block(block.getActions(), block.getType(), new Point(50 + (i * 75), 290), block.getName(), block.getNumArguments(), block.isManualInput()));
+        }
+
+
+        Component.blockArrayList.add(blockBlock);
+    }
+
 
     public static void makeRandomBlocks(int num) {
         BlockBlock blockBlock = new BlockBlock();

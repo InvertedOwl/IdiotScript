@@ -27,11 +27,15 @@ public class BlockList {
             if (block.getArguments().size() != 0) {
                 if (block.getArguments().get(0) instanceof Block) {
                     if (((Block) block.getArguments().get(0)).getReturns() != null) {
+                        System.out.println("TER");
+                        System.out.println(VariableManager.variables.get(((Block) block.getArguments().get(0)).getReturns().get(0)));
                         Object variable = VariableManager.variables.get(((Block) block.getArguments().get(0)).getReturns().get(0));
                         ConsoleManager.addToConsole(String.valueOf(variable), block);
+                        System.out.println(VariableManager.variables.keySet());
                         return null;
                     }
                 } else {
+                    System.out.println("Was a string not a block");
                     ConsoleManager.addToConsole(String.valueOf(block.getArguments().get(0)), block);
                 }
             }
@@ -44,26 +48,35 @@ public class BlockList {
 
 
         Block new_var = new Block(null, BlockType.Variable, new Point(1011/2, 1011),
-                "New Variable", 0, true);
+                "New Value", 0, true);
 
 
         new_var.setActions((block, params) -> {
-            System.out.println(new_var.getArguments());
-            VariableManager.addVariable("Variable", new_var.getArguments().get(0));
+            VariableManager.addVariable("Variable" + VariableManager.variables.size(), block);
             ArrayList<String> returns = new ArrayList<>();
-            returns.add("Variable");
-            new_var.setReturns(returns);
+            returns.add("Variable" + (VariableManager.variables.size() - 1));
+            block.setReturns(returns);
 
             return returns;
         });
         blocks.add(new_var);
 
 
+        blocks.add(new Block((block, params) -> {
+            System.out.println(((Block) block.getArguments().get(0)).getReturns().get(0));
+            VariableManager.addVariable("Variable" + VariableManager.variables.size(), VariableManager.variables.get(((Block) block.getArguments().get(0)).getReturns().get(0)));
+            ArrayList<String> returns = new ArrayList<>();
+            returns.add("Variable" + (VariableManager.variables.size() - 1));
+            block.setReturns(returns);
+
+            return returns;
+        }, BlockType.Variable, new Point(1011/2, 1011), "Set Var", 1, false));
+
         Block rand_var = new Block(null, BlockType.Variable, new Point(1011/2, 1011),
                 "Random", 0, false);
         rand_var.setActions((block, params) -> {
             Random random = new Random();
-            VariableManager.addVariable("Random", random.nextFloat());
+            VariableManager.addVariable("Random" , random.nextFloat());
             ArrayList<String> returns = new ArrayList<>();
             rand_var.setReturns(returns);
             returns.add("Random");
@@ -72,5 +85,20 @@ public class BlockList {
         });
         blocks.add(rand_var);
 
+
+
+        blocks.add(new Block((block, params) -> {
+            System.out.println(((Block) block.getArguments().get(0)).getReturns().get(0));
+            int value1 = Integer.parseInt((String) VariableManager.variables.get(((Block) block.getArguments().get(0)).getReturns().get(0)));
+            int value2 = Integer.parseInt((String) VariableManager.variables.get(((Block) block.getArguments().get(1)).getReturns().get(0)));
+
+
+            VariableManager.addVariable("Variable" + VariableManager.variables.size(), value1 + value2);
+            ArrayList<String> returns = new ArrayList<>();
+            returns.add("Variable" + (VariableManager.variables.size() - 1));
+            block.setReturns(returns);
+
+            return returns;
+        }, BlockType.Operation, new Point(1011/2, 1011), "Add", 2, false));
     }
 }

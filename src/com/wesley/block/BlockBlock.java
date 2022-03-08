@@ -15,7 +15,6 @@ public class BlockBlock implements Runnable {
 
     public BlockBlock() {
         this.blocks = new ArrayList<>();
-        System.out.println("block block constructor");
     }
 
     @Override
