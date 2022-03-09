@@ -52,7 +52,7 @@ public class BlockList {
 
 
         new_var.setActions((block, params) -> {
-            VariableManager.addVariable("Variable" + VariableManager.variables.size(), block);
+            VariableManager.addVariable("Variable" + VariableManager.variables.size(), block.getArguments().get(0));
             ArrayList<String> returns = new ArrayList<>();
             returns.add("Variable" + (VariableManager.variables.size() - 1));
             block.setReturns(returns);
@@ -88,10 +88,13 @@ public class BlockList {
 
 
         blocks.add(new Block((block, params) -> {
-            System.out.println(((Block) block.getArguments().get(0)).getReturns().get(0));
-            int value1 = Integer.parseInt((String) VariableManager.variables.get(((Block) block.getArguments().get(0)).getReturns().get(0)));
-            int value2 = Integer.parseInt((String) VariableManager.variables.get(((Block) block.getArguments().get(1)).getReturns().get(0)));
+            System.out.println(VariableManager.variables.get(((Block) block.getArguments().get(0)).getReturns().get(0)));
+            System.out.println(VariableManager.variables.get(((Block) block.getArguments().get(1)).getReturns().get(0)));
 
+            double value1 = Double.parseDouble(String.valueOf(VariableManager.variables.get(((Block) block.getArguments().get(0)).getReturns().get(0))));
+            double value2 = Double.parseDouble(String.valueOf(VariableManager.variables.get(((Block) block.getArguments().get(1)).getReturns().get(0))));
+
+            System.out.println("Value1 " + value1 + ", Value2 " + value2);
 
             VariableManager.addVariable("Variable" + VariableManager.variables.size(), value1 + value2);
             ArrayList<String> returns = new ArrayList<>();

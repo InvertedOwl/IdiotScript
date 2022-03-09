@@ -1,6 +1,7 @@
 package com.wesley;
 
 import com.wesley.block.Block;
+import com.wesley.block.BlockAction;
 import com.wesley.block.BlockBlock;
 import com.wesley.block.BlockType;
 
@@ -23,6 +24,17 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener 
 
     @Override
     public void mousePressed(MouseEvent e) {
+        for (Block block : Component.menuBlocks){
+            if (inBounds(block.getPosition(), e.getPoint())){
+                System.out.println("woak");
+                BlockBlock blockBlock = new BlockBlock();
+                Block block1 = new Block(block.getActions(), block.getType(), block.getPosition(), block.getName(), block.getNumArguments(), block.isManualInput());
+                blockBlock.getBlocks().add(block1);
+                heldBlockBlock = blockBlock;
+            }
+        }
+
+
         if (e.getButton() != 3 && !selectMode) {
 
             for (int i = 0; i < Component.blockArrayList.size(); i++) {
@@ -54,22 +66,28 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener 
                 }
             }
         } else if (selectMode) {
-            selectMode = false;
             Block block = boundsWith(e.getPoint());
+
             if (block != null) {
-                System.out.println("Block `" + selectBlock.getName() + "` has set its arguments to `" + block.getName() + "`");
-                System.out.println(block.getReturns());
-                ArrayList<Object> blockArrayList = new ArrayList<>();
+                ArrayList<Object> blockArrayList = selectBlock.getArguments();
+                if (blockArrayList.size() == selectBlock.getNumArguments()) {
+                    System.out.println("New arraylist");
+                    blockArrayList = new ArrayList<>();
+                }
                 blockArrayList.add(block);
                 selectBlock.setArguments(blockArrayList);
+                if (selectBlock.getNumArguments() == selectBlock.getArguments().size()) {
+                    System.out.println("Both done");
+                    selectMode = false;
+                }
             }
         } else {
 
             Block block = boundsWith(e.getPoint());
-            if (block != null && !block.isManualInput()) {
+            if (block != null && !block.isManualInput() && block.getNumArguments() > 0) {
                 selectMode = true;
                 selectBlock = block;
-            } else if (block != null){
+            } else if (block != null && block.getNumArguments() > 0){
                 String value = JOptionPane.showInputDialog(Main.component,
                         "vALUE??", null);
 

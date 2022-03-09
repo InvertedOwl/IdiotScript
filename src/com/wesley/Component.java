@@ -12,6 +12,18 @@ import java.util.ArrayList;
 public class Component extends java.awt.Component {
 
     public static ArrayList<BlockBlock> blockArrayList = new ArrayList<BlockBlock>();
+    public static ArrayList<Block> menuBlocks = new ArrayList<>();
+
+    public Component () {
+        for (BlockType type : BlockType.values()) {
+            menuBlocks = new ArrayList<>();
+            for (Block block : BlockList.blocks) {
+                if (block.getType().equals(type)){
+                    menuBlocks.add(block);
+                }
+            }
+        }
+    }
 
     public void paint(Graphics graphics) {
 
@@ -72,6 +84,7 @@ public class Component extends java.awt.Component {
                 case Variable -> graphics.setColor(Color.CYAN);
                 default -> graphics.setColor(Color.WHITE);
             }
+            menuBlocks = new ArrayList<>();
             for (Block block : BlockList.blocks) {
                 if (block.getType().equals(type)){
                     offsety += 95;
@@ -85,8 +98,10 @@ public class Component extends java.awt.Component {
                         default -> graphics.setColor(Color.WHITE);
                     }
 
+                    menuBlocks.add(block);
 
 
+                    block.setPosition(new Point(getWidth()-150 + (150/4), offsety + 45 + 11));
                     graphics.fillRoundRect(getWidth()-150 + (150/4), offsety + 15, 70, 70, 16, 16);
                     graphics.setColor(Color.DARK_GRAY);
                     graphics.drawString(block.getName(), getWidth()-150 + (150/4), offsety + 45 + 11);
@@ -97,7 +112,8 @@ public class Component extends java.awt.Component {
     }
 
     public void paintBlocks(Graphics graphics) {
-        for (BlockBlock blockBlock : blockArrayList ) {
+        for (int i = 0; i < blockArrayList.size(); i++) {
+            BlockBlock blockBlock = blockArrayList.get(i);
             graphics.setColor(Color.DARK_GRAY.darker());
             if (MouseListener.selectMode) graphics.setColor(Color.DARK_GRAY.darker().darker());
             graphics.fillRoundRect((int) blockBlock.getBlocks().get(0).getPosition().getX() - (70/2) - 6, (int) (blockBlock.getBlocks().get(0).getPosition().getY() - (70/2)) - 6, (blockBlock.getBlocks().size() * 75) + 12 - 5, 70 + 12, 16, 16);
