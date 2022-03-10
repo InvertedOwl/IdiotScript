@@ -30,10 +30,6 @@ public class Main {
         frame.addKeyListener(mouseListener);
         ConsoleManager.addToConsole("", null);
         Main.component = render;
-
-        makeAllBlocks();
-
-        makeRandomBlocks(6);
     }
 
     public static void makeAllBlocks() {

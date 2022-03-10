@@ -29,6 +29,16 @@ public class BlockBlock implements Runnable {
             blocks.get(i).setActive(false);
             block.setActive(true);
             block.setReturns(block.getActions().trigger(block));
+            if (!block.isWillContinue()) {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                block.setActive(false);
+                block.setWillContinue(true);
+                return;
+            }
         }
         try {
             Thread.sleep(500);

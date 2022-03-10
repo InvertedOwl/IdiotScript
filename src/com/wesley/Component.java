@@ -16,9 +16,9 @@ public class Component extends java.awt.Component {
 
     public Component () {
         for (BlockType type : BlockType.values()) {
-            menuBlocks = new ArrayList<>();
             for (Block block : BlockList.blocks) {
                 if (block.getType().equals(type)){
+
                     menuBlocks.add(block);
                 }
             }
@@ -26,6 +26,8 @@ public class Component extends java.awt.Component {
     }
 
     public void paint(Graphics graphics) {
+
+
 
         Graphics2D g2d = (Graphics2D) graphics;
         g2d.setStroke(new BasicStroke(1.0F, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
@@ -46,6 +48,7 @@ public class Component extends java.awt.Component {
         if (MouseListener.selectMode) graphics.setColor(Color.DARK_GRAY.darker().darker());
 
 
+
         if (MouseListener.heldBlockBlock != null){
             for (int i = 0; i < MouseListener.heldBlockBlock.getBlocks().size(); i++) {
                 Block block = MouseListener.heldBlockBlock.getBlocks().get(i);
@@ -61,11 +64,16 @@ public class Component extends java.awt.Component {
 
         }
 
-        paintBlocks(graphics);
-
         paintBlockMenu(graphics);
 
+        paintBlocks(graphics);
+
         paintConsole(graphics);
+
+
+        // Garbage
+        graphics.setColor(new Color(255, 0, 0, 125));
+        graphics.fillRect(0, 0, 85, 85);
 
         repaint();
     }
@@ -82,9 +90,9 @@ public class Component extends java.awt.Component {
                 case Trigger -> graphics.setColor(Color.BLUE);
                 case Operation -> graphics.setColor(Color.RED);
                 case Variable -> graphics.setColor(Color.CYAN);
+                case Logic -> graphics.setColor(new Color(255,105,180));
                 default -> graphics.setColor(Color.WHITE);
             }
-            menuBlocks = new ArrayList<>();
             for (Block block : BlockList.blocks) {
                 if (block.getType().equals(type)){
                     offsety += 95;
@@ -95,10 +103,9 @@ public class Component extends java.awt.Component {
                         case Trigger -> graphics.setColor(Color.BLUE);
                         case Operation -> graphics.setColor(Color.RED);
                         case Variable -> graphics.setColor(Color.CYAN);
+                        case Logic -> graphics.setColor(new Color(255,105,180));
                         default -> graphics.setColor(Color.WHITE);
                     }
-
-                    menuBlocks.add(block);
 
 
                     block.setPosition(new Point(getWidth()-150 + (150/4), offsety + 45 + 11));
@@ -134,6 +141,7 @@ public class Component extends java.awt.Component {
                     case Trigger -> graphics.setColor(Color.BLUE);
                     case Operation -> graphics.setColor(Color.RED);
                     case Variable -> graphics.setColor(Color.CYAN);
+                    case Logic -> graphics.setColor(new Color(255,105,180));
                     default -> graphics.setColor(Color.WHITE);
                 }
 

@@ -10,8 +10,10 @@ public class Block {
     private String name;
     private int numArguments;
     private boolean manualInput;
+    private boolean willContinue = true;
     private ArrayList<Object> arguments = new ArrayList<>();
-    private ArrayList<String> returns = new ArrayList<>();
+    private ArrayList<Object> returns = new ArrayList<>();
+
 
     private boolean isActive = false;
 
@@ -67,11 +69,11 @@ public class Block {
         this.name = name;
     }
 
-    public ArrayList<String> getReturns() {
+    public ArrayList<Object> getReturns() {
         return returns;
     }
 
-    public void setReturns(ArrayList<String> returns) {
+    public void setReturns(ArrayList<Object> returns) {
         this.returns = returns;
     }
 
@@ -98,5 +100,14 @@ public class Block {
 
     public void setManualInput(boolean manualInput) {
         this.manualInput = manualInput;
+    }
+
+    public boolean isWillContinue() {
+        return willContinue;
+    }
+
+    public void setWillContinue(boolean willContinue) {
+        System.out.println(willContinue);
+        this.willContinue = willContinue;
     }
 }

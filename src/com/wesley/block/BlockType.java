@@ -5,5 +5,6 @@ public enum BlockType {
     Trigger, // Blue
     Operation, // Red
     Draw, // Yellow
-    Variable // Cyan
+    Variable, // Cyan
+    Logic // Pink
 }

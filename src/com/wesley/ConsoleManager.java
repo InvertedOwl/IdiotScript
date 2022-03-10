@@ -18,7 +18,6 @@ public class ConsoleManager {
 
     public static BlockBlock findBlockinBlockBlockss(Block block) {
         if (block == null) {
-            System.out.println("SUS");
             return null;
         }
         for (int i = 0; i < Component.blockArrayList.size(); i++) {
@@ -35,7 +34,6 @@ public class ConsoleManager {
 
     public static int findBlockinBlockBlocks(Block block) {
         if (block == null) {
-            System.out.println("SUS");
             return -1;
         }
         for (int i = 0; i < Component.blockArrayList.size(); i++) {
@@ -52,7 +50,6 @@ public class ConsoleManager {
 
     public static int findBlockInBlockBlock(Block block, BlockBlock blockBlock) {
         if (block == null || blockBlock == null) {
-            System.out.println("SUS");
             return -1;
         }
         for (int i = 0; i < blockBlock.getBlocks().size(); i++) {

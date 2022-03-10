@@ -11,12 +11,16 @@ public class BlockList {
     public static ArrayList<Block> blocks = new ArrayList<>();
     public static void initilizeBlocks () {
         blocks.add(new Block((block, params) -> {
-            ConsoleManager.addToConsole("Hello World!", block);
+            if (block.getArguments().size() == 0) {
+                ConsoleManager.addToConsole("Hello World!", block);
+            } else {
+                ConsoleManager.addToConsole(String.valueOf(block.getArguments().get(0)), block);
+            }
             return null;
         }, BlockType.Operation, new Point(1011/2, 1011), "Print", 1, true));
 
         blocks.add(new Block((block, params) -> {
-            ConsoleManager.addToConsole("Event", block);
+            ConsoleManager.addToConsole("Start Event", block);
             return null;
         }, BlockType.Event, new Point(1011/2, 1011), "Event", 0, false));
 
@@ -27,15 +31,11 @@ public class BlockList {
             if (block.getArguments().size() != 0) {
                 if (block.getArguments().get(0) instanceof Block) {
                     if (((Block) block.getArguments().get(0)).getReturns() != null) {
-                        System.out.println("TER");
-                        System.out.println(VariableManager.variables.get(((Block) block.getArguments().get(0)).getReturns().get(0)));
                         Object variable = VariableManager.variables.get(((Block) block.getArguments().get(0)).getReturns().get(0));
                         ConsoleManager.addToConsole(String.valueOf(variable), block);
-                        System.out.println(VariableManager.variables.keySet());
                         return null;
                     }
                 } else {
-                    System.out.println("Was a string not a block");
                     ConsoleManager.addToConsole(String.valueOf(block.getArguments().get(0)), block);
                 }
             }
@@ -48,12 +48,12 @@ public class BlockList {
 
 
         Block new_var = new Block(null, BlockType.Variable, new Point(1011/2, 1011),
-                "New Value", 0, true);
+                "New Value", 1, true);
 
 
         new_var.setActions((block, params) -> {
             VariableManager.addVariable("Variable" + VariableManager.variables.size(), block.getArguments().get(0));
-            ArrayList<String> returns = new ArrayList<>();
+            ArrayList<Object> returns = new ArrayList<>();
             returns.add("Variable" + (VariableManager.variables.size() - 1));
             block.setReturns(returns);
 
@@ -63,9 +63,8 @@ public class BlockList {
 
 
         blocks.add(new Block((block, params) -> {
-            System.out.println(((Block) block.getArguments().get(0)).getReturns().get(0));
             VariableManager.addVariable("Variable" + VariableManager.variables.size(), VariableManager.variables.get(((Block) block.getArguments().get(0)).getReturns().get(0)));
-            ArrayList<String> returns = new ArrayList<>();
+            ArrayList<Object> returns = new ArrayList<>();
             returns.add("Variable" + (VariableManager.variables.size() - 1));
             block.setReturns(returns);
 
@@ -77,7 +76,7 @@ public class BlockList {
         rand_var.setActions((block, params) -> {
             Random random = new Random();
             VariableManager.addVariable("Random" , random.nextFloat());
-            ArrayList<String> returns = new ArrayList<>();
+            ArrayList<Object> returns = new ArrayList<>();
             rand_var.setReturns(returns);
             returns.add("Random");
 
@@ -88,20 +87,42 @@ public class BlockList {
 
 
         blocks.add(new Block((block, params) -> {
-            System.out.println(VariableManager.variables.get(((Block) block.getArguments().get(0)).getReturns().get(0)));
-            System.out.println(VariableManager.variables.get(((Block) block.getArguments().get(1)).getReturns().get(0)));
-
             double value1 = Double.parseDouble(String.valueOf(VariableManager.variables.get(((Block) block.getArguments().get(0)).getReturns().get(0))));
             double value2 = Double.parseDouble(String.valueOf(VariableManager.variables.get(((Block) block.getArguments().get(1)).getReturns().get(0))));
 
-            System.out.println("Value1 " + value1 + ", Value2 " + value2);
-
             VariableManager.addVariable("Variable" + VariableManager.variables.size(), value1 + value2);
-            ArrayList<String> returns = new ArrayList<>();
+            ArrayList<Object> returns = new ArrayList<>();
             returns.add("Variable" + (VariableManager.variables.size() - 1));
             block.setReturns(returns);
 
             return returns;
         }, BlockType.Operation, new Point(1011/2, 1011), "Add", 2, false));
+
+        blocks.add(new Block((block, params) -> {
+            double value1 = Double.parseDouble(String.valueOf(VariableManager.variables.get(((Block) block.getArguments().get(0)).getReturns().get(0))));
+
+            VariableManager.addVariable("Variable" + VariableManager.variables.size(), Math.round(value1));
+            ArrayList<Object> returns = new ArrayList<>();
+            returns.add("Variable" + (VariableManager.variables.size() - 1));
+            block.setReturns(returns);
+
+            return returns;
+        }, BlockType.Operation, new Point(1011/2, 1011), "Round", 1, false));
+
+        blocks.add(new Block((block, params) -> {
+            double value1 = Double.parseDouble(String.valueOf(VariableManager.variables.get(((Block) block.getArguments().get(0)).getReturns().get(0))));
+            double value2 = Double.parseDouble(String.valueOf(VariableManager.variables.get(((Block) block.getArguments().get(1)).getReturns().get(0))));
+
+            System.out.println(VariableManager.variables);
+            System.out.println("Value1: " + value1 + ", Value2: " + value2);
+            if (value1 != value2) {
+                block.setWillContinue(false);
+                System.out.println("They are not equal");
+            }
+            return null;
+        }, BlockType.Logic, new Point(1011/2, 1011), "If Equals", 2, false));
+
+
+        blocks.add(new Block((block, params) -> null, BlockType.Operation, new Point(1011/2, 1011), "NoOp", 0, false));
     }
 }

@@ -26,17 +26,16 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener 
     public void mousePressed(MouseEvent e) {
         for (Block block : Component.menuBlocks){
             if (inBounds(block.getPosition(), e.getPoint())){
-                System.out.println("woak");
                 BlockBlock blockBlock = new BlockBlock();
                 Block block1 = new Block(block.getActions(), block.getType(), block.getPosition(), block.getName(), block.getNumArguments(), block.isManualInput());
                 blockBlock.getBlocks().add(block1);
+                Component.blockArrayList.add(blockBlock);
                 heldBlockBlock = blockBlock;
             }
         }
 
 
         if (e.getButton() != 3 && !selectMode) {
-
             for (int i = 0; i < Component.blockArrayList.size(); i++) {
                 BlockBlock blockBlock = Component.blockArrayList.get(i);
                 for (int j = 0; j < blockBlock.getBlocks().size(); j++) {
@@ -47,7 +46,7 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener 
                             heldBlockBlock = blockBlock;
                         } else {
                             BlockBlock newBlockBlock = new BlockBlock();
-                            Component.blockArrayList.add(newBlockBlock);
+
 
                             for (int k = j; k < blockBlock.getBlocks().size(); k++) {
                                 newBlockBlock.getBlocks().add(blockBlock.getBlocks().get(k));
@@ -57,6 +56,7 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener 
                                 blockBlock.getBlocks().remove(blockBlock.getBlocks().get(k));
                                 k--;
                             }
+                            Component.blockArrayList.add(newBlockBlock);
 
                             heldBlockBlock = newBlockBlock;
 
@@ -71,13 +71,11 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener 
             if (block != null) {
                 ArrayList<Object> blockArrayList = selectBlock.getArguments();
                 if (blockArrayList.size() == selectBlock.getNumArguments()) {
-                    System.out.println("New arraylist");
                     blockArrayList = new ArrayList<>();
                 }
                 blockArrayList.add(block);
                 selectBlock.setArguments(blockArrayList);
                 if (selectBlock.getNumArguments() == selectBlock.getArguments().size()) {
-                    System.out.println("Both done");
                     selectMode = false;
                 }
             }
@@ -120,11 +118,17 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener 
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        if (e.getX() < 105 && e.getY() < 105){
+            Component.blockArrayList.remove(heldBlockBlock);
+            heldBlockBlock = null;
+            return;
+        }
+
 
         for (int j = 0; j < Component.blockArrayList.size(); j++) {
             BlockBlock blockBlock = Component.blockArrayList.get(j);
             Block iterBlock = blockBlock.getBlocks().get(blockBlock.getBlocks().size() - 1);
-            if (heldBlockBlock != null) {
+            if (heldBlockBlock != null && !heldBlockBlock.getBlocks().contains(iterBlock)) {
                 if (heldBlockBlock.getBlocks().get(0).getPosition().distance(iterBlock.getPosition().x, iterBlock.getPosition().y) <= 85 && heldBlockBlock.getBlocks().get(0).getPosition().distance(iterBlock.getPosition().x, iterBlock.getPosition().y) != 0) {
                     heldBlockBlock.getBlocks().get(0).setPosition((Point) iterBlock.getPosition().clone());
                     heldBlockBlock.getBlocks().get(0).getPosition().x = heldBlockBlock.getBlocks().get(0).getPosition().x + 75;
@@ -135,6 +139,7 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener 
                             blockBlock.getBlocks().add(heldBlockBlock.getBlocks().get(i));
                         }
                     }
+                    Component.blockArrayList.remove(heldBlockBlock);
                 }
             }
         }
