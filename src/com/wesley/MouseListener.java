@@ -163,9 +163,11 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener,
             ConsoleManager.addToConsole("");
             ConsoleManager.addToConsole("Starting..");
             for (BlockBlock b : Component.blockArrayList) {
-                if (b.getBlocks().get(0).getType().equals(BlockType.Event)) {
-                    Thread thread = new Thread(b);
-                    thread.start();
+                for (Block block : b.getBlocks()) {
+                    if (block.getType().equals(BlockType.Event)) {
+                        Thread thread = new Thread(b);
+                        thread.start();
+                    }
                 }
             }
         }

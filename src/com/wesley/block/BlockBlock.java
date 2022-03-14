@@ -22,7 +22,7 @@ public class BlockBlock implements Runnable {
         for (int i = 0; i < blocks.size() - 1; i++) {
             Block block = blocks.get(i + 1);
             try {
-                Thread.sleep(500);
+                Thread.sleep(250);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -30,11 +30,7 @@ public class BlockBlock implements Runnable {
             block.setActive(true);
             block.setReturns(block.getActions().trigger(block));
             if (!block.isWillContinue()) {
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+
                 block.setActive(false);
                 block.setWillContinue(true);
                 return;
