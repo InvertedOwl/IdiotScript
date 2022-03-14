@@ -7,15 +7,14 @@ import com.wesley.block.BlockType;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 
-public class MouseListener implements java.awt.event.MouseListener, KeyListener {
+public class MouseListener implements java.awt.event.MouseListener, KeyListener, MouseWheelListener {
     public static BlockBlock heldBlockBlock;
     public static boolean selectMode;
     public static Block selectBlock;
+    public static int scroll;
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -25,7 +24,7 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener 
     @Override
     public void mousePressed(MouseEvent e) {
         for (Block block : Component.menuBlocks){
-            if (inBounds(block.getPosition(), e.getPoint())){
+            if (inBounds(new Point((int) block.getPosition().getX(), (int) block.getPosition().getY() + scroll), e.getPoint())){
                 BlockBlock blockBlock = new BlockBlock();
                 Block block1 = new Block(block.getActions(), block.getType(), block.getPosition(), block.getName(), block.getNumArguments(), block.isManualInput());
                 blockBlock.getBlocks().add(block1);
@@ -87,7 +86,7 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener 
                 selectBlock = block;
             } else if (block != null && block.getNumArguments() > 0){
                 String value = JOptionPane.showInputDialog(Main.component,
-                        "vALUE??", null);
+                        "Value: ", null);
 
                 ArrayList<Object> objects = new ArrayList<>();
                 objects.add(value);
@@ -180,5 +179,14 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener 
     @Override
     public void keyReleased(KeyEvent e) {
 
+    }
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        scroll +=  e.getUnitsToScroll() * -10;
+        if (scroll > 0) scroll = 0;
+        for (Block block : Component.menuBlocks) {
+            block.getPosition().y = block.getPosition().y + (e.getScrollAmount() * -10);
+        }
     }
 }

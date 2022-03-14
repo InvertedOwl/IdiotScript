@@ -100,6 +100,30 @@ public class BlockList {
 
         blocks.add(new Block((block, params) -> {
             double value1 = Double.parseDouble(String.valueOf(VariableManager.variables.get(((Block) block.getArguments().get(0)).getReturns().get(0))));
+            double value2 = Double.parseDouble(String.valueOf(VariableManager.variables.get(((Block) block.getArguments().get(1)).getReturns().get(0))));
+
+            VariableManager.addVariable("Variable" + VariableManager.variables.size(), value1 * value2);
+            ArrayList<Object> returns = new ArrayList<>();
+            returns.add("Variable" + (VariableManager.variables.size() - 1));
+            block.setReturns(returns);
+
+            return returns;
+        }, BlockType.Operation, new Point(1011/2, 1011), "Multiply", 2, false));
+
+        blocks.add(new Block((block, params) -> {
+            double value1 = Double.parseDouble(String.valueOf(VariableManager.variables.get(((Block) block.getArguments().get(0)).getReturns().get(0))));
+            double value2 = Double.parseDouble(String.valueOf(VariableManager.variables.get(((Block) block.getArguments().get(1)).getReturns().get(0))));
+
+            VariableManager.addVariable("Variable" + VariableManager.variables.size(), value1 / value2);
+            ArrayList<Object> returns = new ArrayList<>();
+            returns.add("Variable" + (VariableManager.variables.size() - 1));
+            block.setReturns(returns);
+
+            return returns;
+        }, BlockType.Operation, new Point(1011/2, 1011), "Divided by", 2, false));
+
+        blocks.add(new Block((block, params) -> {
+            double value1 = Double.parseDouble(String.valueOf(VariableManager.variables.get(((Block) block.getArguments().get(0)).getReturns().get(0))));
 
             VariableManager.addVariable("Variable" + VariableManager.variables.size(), Math.round(value1));
             ArrayList<Object> returns = new ArrayList<>();
@@ -112,17 +136,25 @@ public class BlockList {
         blocks.add(new Block((block, params) -> {
             double value1 = Double.parseDouble(String.valueOf(VariableManager.variables.get(((Block) block.getArguments().get(0)).getReturns().get(0))));
             double value2 = Double.parseDouble(String.valueOf(VariableManager.variables.get(((Block) block.getArguments().get(1)).getReturns().get(0))));
+            Block triggerBlock = (Block) block.getArguments().get(2);
 
             System.out.println(VariableManager.variables);
             System.out.println("Value1: " + value1 + ", Value2: " + value2);
-            if (value1 != value2) {
+            if (value1 == value2) {
                 block.setWillContinue(false);
+                triggerBlock.getActions().trigger(triggerBlock);
                 System.out.println("They are not equal");
             }
             return null;
-        }, BlockType.Logic, new Point(1011/2, 1011), "If Equals", 2, false));
+        }, BlockType.Logic, new Point(1011/2, 1011), "Jmp If =", 3, false));
 
 
         blocks.add(new Block((block, params) -> null, BlockType.Operation, new Point(1011/2, 1011), "NoOp", 0, false));
+
+        blocks.add(new Block((block, params) -> {
+            ConsoleManager.findBlockinBlockBlockss(block).run();
+            return null;
+        }, BlockType.Trigger, new Point(1011/2, 1011), "Triggered", 0, false));
+
     }
 }

@@ -28,6 +28,7 @@ public class Main {
         MouseListener mouseListener = new MouseListener();
         frame.addMouseListener(mouseListener);
         frame.addKeyListener(mouseListener);
+        frame.addMouseWheelListener(mouseListener);
         ConsoleManager.addToConsole("", null);
         Main.component = render;
     }

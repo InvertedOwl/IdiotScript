@@ -87,7 +87,7 @@ public class Component extends java.awt.Component {
             switch (type){
                 case Draw -> graphics.setColor(Color.YELLOW);
                 case Event -> graphics.setColor(Color.GREEN);
-                case Trigger -> graphics.setColor(Color.BLUE);
+                case Trigger -> graphics.setColor(new Color(3, 190, 252));
                 case Operation -> graphics.setColor(Color.RED);
                 case Variable -> graphics.setColor(Color.CYAN);
                 case Logic -> graphics.setColor(new Color(255,105,180));
@@ -100,7 +100,7 @@ public class Component extends java.awt.Component {
                     switch (type) {
                         case Draw -> graphics.setColor(Color.YELLOW);
                         case Event -> graphics.setColor(Color.GREEN);
-                        case Trigger -> graphics.setColor(Color.BLUE);
+                        case Trigger -> graphics.setColor(new Color(3, 190, 252));
                         case Operation -> graphics.setColor(Color.RED);
                         case Variable -> graphics.setColor(Color.CYAN);
                         case Logic -> graphics.setColor(new Color(255,105,180));
@@ -109,9 +109,9 @@ public class Component extends java.awt.Component {
 
 
                     block.setPosition(new Point(getWidth()-150 + (150/4), offsety + 45 + 11));
-                    graphics.fillRoundRect(getWidth()-150 + (150/4), offsety + 15, 70, 70, 16, 16);
+                    graphics.fillRoundRect(getWidth()-150 + (150/4), block.getPosition().y - 45 + MouseListener.scroll, 70, 70, 16, 16);
                     graphics.setColor(Color.DARK_GRAY);
-                    graphics.drawString(block.getName(), getWidth()-150 + (150/4), offsety + 45 + 11);
+                    graphics.drawString(block.getName(), getWidth()-150 + (150/4), block.getPosition().y - 6 + MouseListener.scroll);
                 }
             }
             offsety += 15;
@@ -138,7 +138,7 @@ public class Component extends java.awt.Component {
                 switch (block.getType()){
                     case Draw -> graphics.setColor(Color.YELLOW);
                     case Event -> graphics.setColor(Color.GREEN);
-                    case Trigger -> graphics.setColor(Color.BLUE);
+                    case Trigger -> graphics.setColor(new Color(3, 190, 252));
                     case Operation -> graphics.setColor(Color.RED);
                     case Variable -> graphics.setColor(Color.CYAN);
                     case Logic -> graphics.setColor(new Color(255,105,180));
