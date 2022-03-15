@@ -60,7 +60,7 @@ public class fileOpen implements ActionListener {
                         argsString = blocks[j].split("/")[1].substring(1, blocks[j].split("/")[1].length() - 1);
 
                     } catch (Exception exception){}
-                    String[] args = argsString.split(",");
+                    String[] args = argsString.split(", ");
                     System.out.println(Arrays.toString(args));
 
 
@@ -73,7 +73,7 @@ public class fileOpen implements ActionListener {
 
                     ArrayList<Object> objectArrayList = new ArrayList<Object>();
                     for (String arg : args) {
-                        arg = arg.replace(" ", "");
+//                        arg = arg.replace(" ", "");
                         if (!arg.startsWith("!block")) objectArrayList.add(arg);
                         else {
                             try {
