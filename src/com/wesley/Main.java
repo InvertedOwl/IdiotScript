@@ -1,5 +1,8 @@
 package com.wesley;
 
+import com.wesley.actionListeners.fileNew;
+import com.wesley.actionListeners.fileOpen;
+import com.wesley.actionListeners.fileSave;
 import com.wesley.block.*;
 
 import javax.swing.*;
@@ -16,21 +19,53 @@ public class Main {
 
         JFrame frame = new JFrame("Block Coding");
         frame.setSize(1011, 1011);
-        frame.setVisible(true);
+        // Menu bar buttons
+        JMenuBar menuBar = new JMenuBar();
+        menuBar.add(createFileMenu());
+        frame.setJMenuBar(menuBar);
+
+
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setLocation(screenSize.width/2 - 500, 50 - 20);
         Component render = new Component();
         render.setSize(1011, 1011);
         frame.add(render);
-        render.paint(frame.getGraphics());
-        render.repaint();
+
         MouseListener mouseListener = new MouseListener();
         frame.addMouseListener(mouseListener);
         frame.addKeyListener(mouseListener);
         frame.addMouseWheelListener(mouseListener);
         ConsoleManager.addToConsole("", null);
         Main.component = render;
+
+        frame.setVisible(true);
+        frame.paint(frame.getGraphics());
+        frame.repaint();
+        render.paint(frame.getGraphics());
+        render.repaint();
+
+
+
+
+    }
+
+    private static JMenu createFileMenu() {
+        JMenu fileMenu = new JMenu("File");
+
+        JMenuItem newItem = new JMenuItem("New Board");
+        newItem.addActionListener(new fileNew());
+        fileMenu.add(newItem);
+
+        JMenuItem openItem = new JMenuItem("Open Board (.is)");
+        openItem.addActionListener(new fileOpen());
+        fileMenu.add(openItem);
+
+        JMenuItem saveItem = new JMenuItem("Save Board");
+        fileMenu.add(saveItem);
+        saveItem.addActionListener(new fileSave());
+
+        return fileMenu;
     }
 
     public static void makeAllBlocks() {

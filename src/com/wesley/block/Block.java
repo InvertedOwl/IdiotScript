@@ -79,7 +79,7 @@ public class Block {
 
     public void setArguments(ArrayList<Object> arguments) {
         this.arguments = arguments;
-        System.out.println("Arguments set to " + arguments);
+
     }
 
     public ArrayList<Object> getArguments() {

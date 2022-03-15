@@ -123,6 +123,7 @@ public class Component extends java.awt.Component {
             BlockBlock blockBlock = blockArrayList.get(i);
             graphics.setColor(Color.DARK_GRAY.darker());
             if (MouseListener.selectMode) graphics.setColor(Color.DARK_GRAY.darker().darker());
+            if (blockBlock.getBlocks().size() > 0)
             graphics.fillRoundRect((int) blockBlock.getBlocks().get(0).getPosition().getX() - (70/2) - 6, (int) (blockBlock.getBlocks().get(0).getPosition().getY() - (70/2)) - 6, (blockBlock.getBlocks().size() * 75) + 12 - 5, 70 + 12, 16, 16);
 
             for (Block block : blockBlock.getBlocks()) {

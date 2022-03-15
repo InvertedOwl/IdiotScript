@@ -126,6 +126,7 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener,
 
         for (int j = 0; j < Component.blockArrayList.size(); j++) {
             BlockBlock blockBlock = Component.blockArrayList.get(j);
+            if (blockBlock.getBlocks().size() == 0) return;
             Block iterBlock = blockBlock.getBlocks().get(blockBlock.getBlocks().size() - 1);
             if (heldBlockBlock != null && !heldBlockBlock.getBlocks().contains(iterBlock)) {
                 if (heldBlockBlock.getBlocks().get(0).getPosition().distance(iterBlock.getPosition().x, iterBlock.getPosition().y) <= 85 && heldBlockBlock.getBlocks().get(0).getPosition().distance(iterBlock.getPosition().x, iterBlock.getPosition().y) != 0) {

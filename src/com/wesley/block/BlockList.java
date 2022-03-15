@@ -112,6 +112,28 @@ public class BlockList {
 
         blocks.add(new Block((block, params) -> {
             double value1 = Double.parseDouble(String.valueOf(VariableManager.variables.get(((Block) block.getArguments().get(0)).getReturns().get(0))));
+
+            VariableManager.addVariable("Variable" + VariableManager.variables.size(), value1 * value1);
+            ArrayList<Object> returns = new ArrayList<>();
+            returns.add("Variable" + (VariableManager.variables.size() - 1));
+            block.setReturns(returns);
+
+            return returns;
+        }, BlockType.Operation, new Point(1011/2, 1011), "Square", 1, false));
+
+        blocks.add(new Block((block, params) -> {
+            double value1 = Double.parseDouble(String.valueOf(VariableManager.variables.get(((Block) block.getArguments().get(0)).getReturns().get(0))));
+
+            VariableManager.addVariable("Variable" + VariableManager.variables.size(), Math.sqrt(value1));
+            ArrayList<Object> returns = new ArrayList<>();
+            returns.add("Variable" + (VariableManager.variables.size() - 1));
+            block.setReturns(returns);
+
+            return returns;
+        }, BlockType.Operation, new Point(1011/2, 1011), "Sqrt", 1, false));
+
+        blocks.add(new Block((block, params) -> {
+            double value1 = Double.parseDouble(String.valueOf(VariableManager.variables.get(((Block) block.getArguments().get(0)).getReturns().get(0))));
             double value2 = Double.parseDouble(String.valueOf(VariableManager.variables.get(((Block) block.getArguments().get(1)).getReturns().get(0))));
 
             VariableManager.addVariable("Variable" + VariableManager.variables.size(), value1 * value2);
