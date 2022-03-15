@@ -1,5 +1,7 @@
 package com.wesley.block;
 
+import com.wesley.Main;
+
 import java.util.ArrayList;
 
 public class BlockBlock implements Runnable {
@@ -22,7 +24,7 @@ public class BlockBlock implements Runnable {
         for (int i = 0; i < blocks.size() - 1; i++) {
             Block block = blocks.get(i + 1);
             try {
-                Thread.sleep(250);
+                Thread.sleep(Main.speed);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -37,7 +39,7 @@ public class BlockBlock implements Runnable {
             }
         }
         try {
-            Thread.sleep(500);
+            Thread.sleep(Main.speed * 2L);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

@@ -1,8 +1,6 @@
 package com.wesley;
 
-import com.wesley.actionListeners.fileNew;
-import com.wesley.actionListeners.fileOpen;
-import com.wesley.actionListeners.fileSave;
+import com.wesley.actionListeners.*;
 import com.wesley.block.*;
 
 import javax.swing.*;
@@ -13,6 +11,7 @@ import java.util.Random;
 public class Main {
 
     public static Component component;
+    public static int speed = 250;
 
     public static void main(String[] args) {
         BlockList.initilizeBlocks();
@@ -22,6 +21,7 @@ public class Main {
         // Menu bar buttons
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(createFileMenu());
+        menuBar.add(createEditMenu());
         frame.setJMenuBar(menuBar);
 
 
@@ -48,6 +48,20 @@ public class Main {
 
 
 
+    }
+
+    private static JMenu createEditMenu() {
+        JMenu fileMenu = new JMenu("Edit");
+
+        JMenuItem speed_up = new JMenuItem("Speed Up");
+        speed_up.addActionListener(new editSpeed());
+        fileMenu.add(speed_up);
+
+        JMenuItem slow_down = new JMenuItem("Slow down");
+        slow_down.addActionListener(new editSlow());
+        fileMenu.add(slow_down);
+
+        return fileMenu;
     }
 
     private static JMenu createFileMenu() {
