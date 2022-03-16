@@ -15,6 +15,7 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener,
     public static boolean selectMode;
     public static Block selectBlock;
     public static int scroll;
+    public static float scale = 1;
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -186,10 +187,15 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener,
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-        scroll +=  e.getUnitsToScroll() * -10;
-        if (scroll > 0) scroll = 0;
-        for (Block block : Component.menuBlocks) {
-            block.getPosition().y = block.getPosition().y + (e.getScrollAmount() * -10);
+        if (e.getX() > Main.component.getWidth() - 150) {
+            scroll += e.getUnitsToScroll() * -10;
+            if (scroll > 0) scroll = 0;
+            for (Block block : Component.menuBlocks) {
+                block.getPosition().y = block.getPosition().y + (e.getScrollAmount() * -10);
+            }
+        } else {
+            scale += e.getPreciseWheelRotation() / 10;
+            Component.mainPoint = new Point(e.getX() - (Main.component.getWidth() / 2), e.getY() - (Main.component.getHeight() / 2));
         }
     }
 }
