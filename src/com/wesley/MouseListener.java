@@ -8,6 +8,7 @@ import com.wesley.block.BlockType;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 
 public class MouseListener implements java.awt.event.MouseListener, KeyListener, MouseWheelListener {
@@ -24,6 +25,8 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener,
 
     @Override
     public void mousePressed(MouseEvent e) {
+
+
         for (Block block : Component.menuBlocks){
             if (inBounds(new Point((int) block.getPosition().getX(), (int) block.getPosition().getY() + scroll), e.getPoint())){
                 BlockBlock blockBlock = new BlockBlock();

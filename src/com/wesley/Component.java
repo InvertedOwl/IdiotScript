@@ -42,17 +42,6 @@ public class Component extends java.awt.Component {
         g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
         g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 
-        double width = getWidth();
-        double height = getHeight();
-
-        double zoomWidth = width * MouseListener.scale;
-        double zoomHeight = height * MouseListener.scale;
-
-        double anchorx = (width - zoomWidth) / 2;
-        double anchory = (height - zoomHeight) / 2;
-
-
-
 
         g2d.setColor(Color.DARK_GRAY);
         if (MouseListener.selectMode) g2d.setColor(Color.DARK_GRAY.darker());
@@ -80,20 +69,16 @@ public class Component extends java.awt.Component {
         paintBlockMenu(g2d);
         paintConsole(g2d);
 
-        AffineTransform at = new AffineTransform();
-        at.translate(anchorx, anchory);
-        at.scale(MouseListener.scale, MouseListener.scale);
-        at.translate(mainPoint.x, mainPoint.y);
+        g2d.setColor(new Color(255, 0, 0, 125));
+        g2d.fillRect(0, 0, 85, 85);
 
-        g2d.setTransform(at);
         paintBlocks(g2d);
 
 
 
 
         // Garbage
-        g2d.setColor(new Color(255, 0, 0, 125));
-        g2d.fillRect(0, 0, 85, 85);
+
 
         repaint();
     }
@@ -139,7 +124,12 @@ public class Component extends java.awt.Component {
     }
 
     public void paintBlocks(Graphics2D g2d) {
+        AffineTransform at = new AffineTransform();
+        at.scale(MouseListener.scale, MouseListener.scale);
+
+        g2d.setTransform(at);
         for (int i = 0; i < blockArrayList.size(); i++) {
+
             BlockBlock blockBlock = blockArrayList.get(i);
             g2d.setColor(Color.DARK_GRAY.darker());
             if (MouseListener.selectMode) g2d.setColor(Color.DARK_GRAY.darker().darker());
@@ -147,6 +137,7 @@ public class Component extends java.awt.Component {
             g2d.fillRoundRect((int) blockBlock.getBlocks().get(0).getPosition().getX() - (70/2) - 6, (int) (blockBlock.getBlocks().get(0).getPosition().getY() - (70/2)) - 6, (blockBlock.getBlocks().size() * 75) + 12 - 5, 70 + 12, 16, 16);
 
             for (Block block : blockBlock.getBlocks()) {
+
 
                 if (block.isActive()) {
                     g2d.setColor(Color.WHITE);
@@ -165,6 +156,7 @@ public class Component extends java.awt.Component {
                     case Logic -> g2d.setColor(new Color(255,105,180));
                     default -> g2d.setColor(Color.WHITE);
                 }
+
 
                 g2d.fillRoundRect((int) (block.getPosition().getX() - (70/2)), (int) (block.getPosition().getY() - (70/2)), 70, 70, 16, 16);
                 g2d.setColor(Color.DARK_GRAY);
