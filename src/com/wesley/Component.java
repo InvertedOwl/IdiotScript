@@ -16,6 +16,7 @@ public class Component extends java.awt.Component {
     public static ArrayList<Block> menuBlocks = new ArrayList<>();
     public static Graphics2D G2D;
     public static Point mainPoint = new Point(-100, -100);
+    private Point offset = new Point(0, 0);
 
     public Component () {
         for (BlockType type : BlockType.values()) {
@@ -51,19 +52,28 @@ public class Component extends java.awt.Component {
 
 
 
+
         if (MouseListener.heldBlockBlock != null){
             for (int i = 0; i < MouseListener.heldBlockBlock.getBlocks().size(); i++) {
                 Block block = MouseListener.heldBlockBlock.getBlocks().get(i);
                 Point point = getMousePosition();
 
                 if (point != null) {
-                    point.setLocation(point.x + (i * 75), point.y);
+                    point.setLocation(((point.x + (i * 75 * MouseListener.scale)) / MouseListener.scale) - offset.x, point.y / MouseListener.scale - offset.y);
                     block.setPosition(point);
 
                 }
 
             }
 
+        }
+
+        if (MouseListener.dragBoard && getMousePosition() != null) {
+            offset.x = getMousePosition().x + MouseListener.xOffset - MouseListener.mouseXStrt + 8;
+            offset.y = getMousePosition().y + MouseListener.yOffset - MouseListener.mouseYStrt + 54;
+        } else if (getMousePosition() != null){
+            MouseListener.xOffset = offset.x;
+            MouseListener.yOffset = offset.y;
         }
 
         paintBlockMenu(g2d);
@@ -75,9 +85,9 @@ public class Component extends java.awt.Component {
         paintBlocks(g2d);
 
 
+        g2d.setColor(Color.white);
+        g2d.fillOval(offset.x - 5, offset.y - 5, 10, 10);
 
-
-        // Garbage
 
 
         repaint();
@@ -134,14 +144,14 @@ public class Component extends java.awt.Component {
             g2d.setColor(Color.DARK_GRAY.darker());
             if (MouseListener.selectMode) g2d.setColor(Color.DARK_GRAY.darker().darker());
             if (blockBlock.getBlocks().size() > 0)
-            g2d.fillRoundRect((int) blockBlock.getBlocks().get(0).getPosition().getX() - (70/2) - 6, (int) (blockBlock.getBlocks().get(0).getPosition().getY() - (70/2)) - 6, (blockBlock.getBlocks().size() * 75) + 12 - 5, 70 + 12, 16, 16);
+            g2d.fillRoundRect((int) blockBlock.getBlocks().get(0).getPosition().getX() - (70/2) - 6 + offset.x, (int) (blockBlock.getBlocks().get(0).getPosition().getY() - (70/2)) - 6 + offset.y, (blockBlock.getBlocks().size() * 75) + 12 - 5, 70 + 12, 16, 16);
 
             for (Block block : blockBlock.getBlocks()) {
 
 
                 if (block.isActive()) {
                     g2d.setColor(Color.WHITE);
-                    g2d.fillRoundRect((int) block.getPosition().getX() - (70/2) - 5, (int) block.getPosition().getY() - (70/2) - 5, 70 + 10, 70 + 10, 16, 16);
+                    g2d.fillRoundRect((int) block.getPosition().getX() - (70/2) - 5 + offset.x, (int) block.getPosition().getY() - (70/2) - 5 + offset.y, 70 + 10, 70 + 10, 16, 16);
 
                 }
 
@@ -158,9 +168,9 @@ public class Component extends java.awt.Component {
                 }
 
 
-                g2d.fillRoundRect((int) (block.getPosition().getX() - (70/2)), (int) (block.getPosition().getY() - (70/2)), 70, 70, 16, 16);
+                g2d.fillRoundRect((int) (block.getPosition().getX() - (70/2)) + offset.x, (int) (block.getPosition().getY() - (70/2))  + offset.y, 70, 70, 16, 16);
                 g2d.setColor(Color.DARK_GRAY);
-                g2d.drawString(block.getName(), (int) (block.getPosition().getX() - (70/2)), (int) ((int) (block.getPosition().getY() - (70/2) + 4.5 + (70/2))));
+                g2d.drawString(block.getName(), (int) (block.getPosition().getX() - (70/2)) + offset.x, (int) ((int) (block.getPosition().getY() - (70/2) + 4.5 + (70/2))) + offset.y);
             }
         }
     }

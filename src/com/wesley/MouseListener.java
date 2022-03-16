@@ -16,7 +16,13 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener,
     public static boolean selectMode;
     public static Block selectBlock;
     public static int scroll;
+    private Point mouse;
+    public static boolean dragBoard;
     public static float scale = 1;
+    public static int xOffset = 0;
+    public static int yOffset = 0;
+    public static int mouseXStrt;
+    public static int mouseYStrt;
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -26,6 +32,11 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener,
     @Override
     public void mousePressed(MouseEvent e) {
 
+        if (e.getButton() == MouseEvent.BUTTON2){
+            mouseXStrt = e.getX();
+            mouseYStrt = e.getY();
+            dragBoard = true;
+        }
 
         for (Block block : Component.menuBlocks){
             if (inBounds(new Point((int) block.getPosition().getX(), (int) block.getPosition().getY() + scroll), e.getPoint())){
@@ -36,6 +47,8 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener,
                 heldBlockBlock = blockBlock;
             }
         }
+        Point mouse = new Point((int) (Main.component.getMousePosition().x / scale) - MouseListener.xOffset, (int) (Main.component.getMousePosition().y / scale) - MouseListener.yOffset);
+        this.mouse = mouse;
 
 
         if (e.getButton() != 3 && !selectMode) {
@@ -44,7 +57,7 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener,
                 for (int j = 0; j < blockBlock.getBlocks().size(); j++) {
                     Block block = blockBlock.getBlocks().get(j);
 
-                    if (inBounds(block.getPosition(), e.getPoint())) {
+                    if (inBounds(block.getPosition(), mouse)) {
                         if (j == 0) {
                             heldBlockBlock = blockBlock;
                         } else {
@@ -69,7 +82,7 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener,
                 }
             }
         } else if (selectMode) {
-            Block block = boundsWith(e.getPoint());
+            Block block = boundsWith(mouse);
 
             if (block != null) {
                 ArrayList<Object> blockArrayList = selectBlock.getArguments();
@@ -84,7 +97,7 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener,
             }
         } else {
 
-            Block block = boundsWith(e.getPoint());
+            Block block = boundsWith(mouse);
             if (block != null && !block.isManualInput() && block.getNumArguments() > 0) {
                 selectMode = true;
                 selectBlock = block;
@@ -121,6 +134,10 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener,
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        if (e.getButton() == MouseEvent.BUTTON2){
+            dragBoard = false;
+        }
+
         if (e.getX() < 105 && e.getY() < 105){
             Component.blockArrayList.remove(heldBlockBlock);
             heldBlockBlock = null;
@@ -190,14 +207,14 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener,
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
-        if (e.getX() > Main.component.getWidth() - 150) {
-            scroll += e.getUnitsToScroll() * -10;
+        if (e.getX() > Main.component.getWidth() - 150 && !dragBoard) {
+            scroll += e.getPreciseWheelRotation() * 20;
             if (scroll > 0) scroll = 0;
             for (Block block : Component.menuBlocks) {
                 block.getPosition().y = block.getPosition().y + (e.getScrollAmount() * -10);
             }
-        } else {
-            scale += e.getPreciseWheelRotation() / 10;
+        } else if (!dragBoard){
+            scale += e.getPreciseWheelRotation() / 20;
             Component.mainPoint = new Point(e.getX() - (Main.component.getWidth() / 2), e.getY() - (Main.component.getHeight() / 2));
         }
     }
