@@ -73,7 +73,7 @@ public class fileOpen implements ActionListener {
                     Block block = new Block(blockTemp.getActions(), blockTemp.getType(), new Point(Integer.parseInt(coords[0]) + (blockNum * 75), Integer.parseInt(coords[1])), name, blockTemp.getNumArguments(), blockTemp.isManualInput());
 
                     IntToBlockMap.put(totalBlock, block);
-                    totalBlock ++;
+                    totalBlock ++;//
 
 
                     ArrayList<Object> objectArrayList = new ArrayList<Object>();

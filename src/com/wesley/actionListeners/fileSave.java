@@ -40,7 +40,7 @@ public class fileSave implements ActionListener {
                     blockNum++;
                 }
             }
-
+//
             line ++;
             writer.write("\n");
 
