@@ -76,18 +76,17 @@ public class Component extends java.awt.Component {
             MouseListener.yOffset = offset.y;
         }
 
-        paintBlockMenu(g2d);
-        paintConsole(g2d);
 
         g2d.setColor(new Color(255, 0, 0, 125));
         g2d.fillRect(0, 0, 85, 85);
 
         paintBlocks(g2d);
+        AffineTransform at = new AffineTransform();
+        at.scale(1, 1);
+        g2d.setTransform(at);
 
-
-        g2d.setColor(Color.white);
-        g2d.fillOval(offset.x - 5, offset.y - 5, 10, 10);
-
+        paintBlockMenu(g2d);
+        paintConsole(g2d);
 
 
         repaint();
@@ -131,13 +130,15 @@ public class Component extends java.awt.Component {
             }
             offsety += 15;
         }
+
+
     }
 
     public void paintBlocks(Graphics2D g2d) {
         AffineTransform at = new AffineTransform();
         at.scale(MouseListener.scale, MouseListener.scale);
-
         g2d.setTransform(at);
+
         for (int i = 0; i < blockArrayList.size(); i++) {
 
             BlockBlock blockBlock = blockArrayList.get(i);
@@ -173,6 +174,7 @@ public class Component extends java.awt.Component {
                 g2d.drawString(block.getName(), (int) (block.getPosition().getX() - (70/2)) + offset.x, (int) ((int) (block.getPosition().getY() - (70/2) + 4.5 + (70/2))) + offset.y);
             }
         }
+
     }
 
     public void paintConsole(Graphics2D g2d) {
