@@ -45,10 +45,15 @@ public class fileOpen implements ActionListener {
 
             String[] blockBlocks = fileString.split("\n-");
 
+
             int blockBlockNum = 0;
             int totalBlock = 0;
             for (int i = 1; i < blockBlocks.length; i++) {
                 BlockBlock blockBlock = new BlockBlock();
+                String[] coords = blockBlocks[i].split("\n")[0].replace("(", "").replace(")", "").split(",");
+                coords[0] = coords[0].replace("n", "-");
+                coords[1] = coords[1].replace("n", "-");
+                System.out.println("Bro, " + Arrays.toString(coords));
 
                 String[] blocks = blockBlocks[i].split("\n");
                 int blockNum = 0;
@@ -65,7 +70,7 @@ public class fileOpen implements ActionListener {
 
 
                     Block blockTemp = findBlock(name);
-                    Block block = new Block(blockTemp.getActions(), blockTemp.getType(), new Point(50 + (blockNum * 75), 250 + (blockBlockNum * 90)), name, blockTemp.getNumArguments(), blockTemp.isManualInput());
+                    Block block = new Block(blockTemp.getActions(), blockTemp.getType(), new Point(Integer.parseInt(coords[0]) + (blockNum * 75), Integer.parseInt(coords[1])), name, blockTemp.getNumArguments(), blockTemp.isManualInput());
 
                     IntToBlockMap.put(totalBlock, block);
                     totalBlock ++;

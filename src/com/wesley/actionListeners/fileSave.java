@@ -42,9 +42,11 @@ public class fileSave implements ActionListener {
             }
 
             line ++;
-            writer.write("\n-\n");
+            writer.write("\n");
 
             for (BlockBlock blockBlock : Component.blockArrayList) {
+                writer.write("-(" + (blockBlock.getBlocks().get(0).getPosition().x + "," + blockBlock.getBlocks().get(0).getPosition().y).replace("-", "n") + ")\n");
+
                 for (Block block : blockBlock.getBlocks()) {
 
                     ArrayList<Object> arguments = (ArrayList<Object>) block.getArguments().clone();
@@ -63,7 +65,6 @@ public class fileSave implements ActionListener {
 
 
                 }
-                writer.write("-\n");
             }
             writer.close();
         }
