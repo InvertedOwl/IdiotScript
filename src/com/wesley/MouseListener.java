@@ -208,7 +208,7 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener,
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
         if (e.getX() > Main.component.getWidth() - 150 && !dragBoard) {
-            scroll += e.getPreciseWheelRotation() * 20;
+            scroll += e.getPreciseWheelRotation() * -50;
             if (scroll > 0) scroll = 0;
             for (Block block : Component.menuBlocks) {
                 block.getPosition().y = block.getPosition().y + (e.getScrollAmount() * -10);
