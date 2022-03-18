@@ -4,7 +4,7 @@ public enum BlockType {
     Event, // Green
     Trigger, // Blue
     Operation, // Red
-    Draw, // Yellow
     Variable, // Cyan
-    Logic // Pink
+    Logic, // Pink
+    Draw // Yellow
 }

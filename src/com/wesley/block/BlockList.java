@@ -64,13 +64,20 @@ public class BlockList {
 
 
         blocks.add(new Block((block, params) -> {
+            Block set = (Block) block.getArguments().get(0);
+            Block to = (Block) block.getArguments().get(1);
+
+            VariableManager.variables.put((String) set.getReturns().get(0), VariableManager.variables.get((String) to.getReturns().get(0)));
+
+
+
             VariableManager.addVariable("Variable" + VariableManager.variables.size(), VariableManager.variables.get(((Block) block.getArguments().get(0)).getReturns().get(0)));
             ArrayList<Object> returns = new ArrayList<>();
             returns.add("Variable" + (VariableManager.variables.size() - 1));
             block.setReturns(returns);
 
             return returns;
-        }, BlockType.Variable, new Point(1011/2, 1011), "Set Var", 1, false));
+        }, BlockType.Variable, new Point(1011/2, 1011), "Set Var", 2, false));
 
         Block rand_var = new Block(null, BlockType.Variable, new Point(1011/2, 1011),
                 "Random", 0, false);
@@ -227,5 +234,39 @@ public class BlockList {
             return null;
         }, BlockType.Trigger, new Point(1011/2, 1011), "Triggered", 0, false));
 
+
+
+        // DRAW STUFF
+        blocks.add(new Block((block, params) -> {
+            double value1 = Double.parseDouble(String.valueOf(VariableManager.variables.get(((Block) block.getArguments().get(0)).getReturns().get(0))));
+            double value2 = Double.parseDouble(String.valueOf(VariableManager.variables.get(((Block) block.getArguments().get(1)).getReturns().get(0))));
+
+            JFrame frame = null;
+
+            if (Main.blockJFrame == null || !Main.blockJFrame.isVisible()) {
+                frame = new JFrame("IS Draw Window");
+                frame.setSize((int) value1, (int) value2 + 40);
+                frame.setVisible(true);
+
+                Main.blockJFrame = frame;
+
+
+            } else {
+                Main.blockJFrame.setSize((int) value1, (int) value2 + 40);
+            }
+
+            frame = Main.blockJFrame;
+            frame.toFront();
+            frame.requestFocus();
+
+            BlockDrawWindow blockDrawWindow = new BlockDrawWindow();
+
+
+            Main.blockDrawWindow = blockDrawWindow;
+            frame.add(blockDrawWindow);
+
+
+            return null;
+        }, BlockType.Draw, new Point(1011/2, 1011), "Window", 2, false));
     }
 }

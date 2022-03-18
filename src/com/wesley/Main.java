@@ -12,6 +12,8 @@ public class Main {
 
     public static Component component;
     public static int speed = 250;
+    public static BlockDrawWindow blockDrawWindow;
+    public static JFrame blockJFrame;
 
     public static void main(String[] args) {
         BlockList.initilizeBlocks();
