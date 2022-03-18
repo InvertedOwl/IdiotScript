@@ -128,7 +128,7 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener,
     }
 
     public boolean inBounds(Point block, Point mouse) {
-        if (mouse.getY() > block.getY() - 20 && mouse.getX() > block.getX() - 20 && mouse.getX() < block.getX() + 70 && mouse.getY() < block.getY() + 70) return true;
+        if (mouse.getY() > block.getY() - 40 && mouse.getX() > block.getX() - 40 - 20 && mouse.getX() < block.getX() + 70 - 20 && mouse.getY() < block.getY() + 70 ) return true;
         return false;
     }
 

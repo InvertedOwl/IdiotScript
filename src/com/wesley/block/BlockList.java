@@ -253,11 +253,13 @@ public class BlockList {
 
             } else {
                 Main.blockJFrame.setSize((int) value1, (int) value2 + 40);
+                Main.blockJFrame.remove(Main.blockDrawWindow);
             }
 
             frame = Main.blockJFrame;
             frame.toFront();
             frame.requestFocus();
+            frame.setResizable(false);
 
             BlockDrawWindow blockDrawWindow = new BlockDrawWindow();
 
@@ -268,5 +270,20 @@ public class BlockList {
 
             return null;
         }, BlockType.Draw, new Point(1011/2, 1011), "Window", 2, false));
+
+
+        blocks.add(new Block((block, params) -> {
+            BlockDrawMove blockDrawMove = new BlockDrawMove(new Point(50, 100), 5);
+            blockDrawMove.run();
+            return null;
+        }, BlockType.Draw, new Point(1011/2, 1011), "Move To", 0, false));
+
+        blocks.add(new Block((block, params) -> {
+            System.out.println();
+            BlockDrawMove blockDrawMove = new BlockDrawMove(new Point(0, 0), 5);
+            blockDrawMove.run();
+            return null;
+        }, BlockType.Draw, new Point(1011/2, 1011), "Right", 0, false));
+
     }
 }
