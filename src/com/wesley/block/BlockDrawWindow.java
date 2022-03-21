@@ -1,5 +1,7 @@
 package com.wesley.block;
 
+import com.wesley.Main;
+
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -7,6 +9,7 @@ public class BlockDrawWindow extends Component {
     public Point pen = new Point(1, 1);
     public Point direction = new Point(1, 0);
     public ArrayList<Point> toDraw = new ArrayList<>();
+
 
     public void paint(Graphics graphics) {
         Graphics2D g2d = (Graphics2D) graphics;
@@ -23,6 +26,7 @@ public class BlockDrawWindow extends Component {
         g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 
 
+        graphics.fillOval(Main.blockDrawWindow.pen.x - 3, Main.blockDrawWindow.pen.y - 3, 6, 6);
         for (int i = 0; i < toDraw.size(); i++) {
             Point p = toDraw.get(i);
             graphics.fillOval(p.x-3, p.y-3, 6, 6);

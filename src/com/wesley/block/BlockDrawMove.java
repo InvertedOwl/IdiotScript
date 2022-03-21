@@ -8,6 +8,7 @@ public class BlockDrawMove implements Runnable{
     Point from;
     Point to;
     int speed;
+    public static boolean draw = true;
 
     public BlockDrawMove (Point to, int speed) {
         this.to = to;
@@ -45,7 +46,9 @@ public class BlockDrawMove implements Runnable{
             }
             if (Math.abs((to.x - from.x)) < 2 && Math.abs((to.y - from.y)) < 2) break;
 
-            Main.blockDrawWindow.toDraw.add((Point) from.clone());
+            if (draw) {
+                Main.blockDrawWindow.toDraw.add((Point) from.clone());
+            }
 
             Main.blockDrawWindow.pen = from;
 
