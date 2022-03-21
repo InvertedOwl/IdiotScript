@@ -11,33 +11,41 @@ public class BlockDrawMove implements Runnable{
 
     public BlockDrawMove (Point to, int speed) {
         this.to = to;
-        this.from = new Point(1, 1);
+        this.from = (Point) Main.blockDrawWindow.pen.clone();
         this.speed = speed;
     }
 
     @Override
     public void run() {
         System.out.println(from.x + ", " + from.y);
-        double hyp = Math.hypot(from.x, from.y);
+        double hyp = Math.hypot((to.x - from.x), (to.y - from.y));
+
+        float xDist = (float) ((to.x - from.x)/hyp);
+        float yDist = (float) ((to.y - from.y)/hyp);
+
+        System.out.println("Triangles: " + (to.x - from.x) + "," + (to.y - from.y) + " \n\n" + "Hyp: " + hyp + "\nMove by: " + xDist + ", " + yDist + "\n");
+        float fromx = from.x;
+        float fromy = from.y;
+
+        while (from.x != to.x || from.y != to.y) {
 
 
 
-        while (from.x != to.x && from.y != to.y) {
-            System.out.println(from.x + ", " + from.y);
+            fromx += xDist;
+            fromy += yDist;
 
+            from.x = (int) fromx;
+            from.y = (int) fromy;
 
-            float xDist = to.x - from.x;
-            float yDist = to.y - from.y;
+            if (Math.abs((to.x - from.x)) < 2) {
+                from.x = to.x;
+            }
+            if (Math.abs((to.y - from.y)) < 2) {
+                from.y = to.y;
+            }
+            if (Math.abs((to.x - from.x)) < 2 && Math.abs((to.y - from.y)) < 2) break;
 
-            System.out.println(hyp);
-
-            from.x += xDist/hyp;
-            from.y += yDist/hyp;
-
-            if (Math.abs(xDist) < 2) from.x = to.x;
-            if (Math.abs(yDist) < 2) from.y = to.y;
-
-//            Main.blockDrawWindow.toDraw.add((Point) from.clone());
+            Main.blockDrawWindow.toDraw.add((Point) from.clone());
 
             Main.blockDrawWindow.pen = from;
 
@@ -47,5 +55,8 @@ public class BlockDrawMove implements Runnable{
                 e.printStackTrace();
             }
         }
+        System.out.println("from.x is close enough at " + from.x);
+        System.out.println("from.y is close enough at " + from.y);
+
     }
 }

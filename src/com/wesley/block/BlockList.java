@@ -265,25 +265,32 @@ public class BlockList {
 
 
             Main.blockDrawWindow = blockDrawWindow;
+            frame.remove(Main.blockDrawWindow);
             frame.add(blockDrawWindow);
 
 
             return null;
         }, BlockType.Draw, new Point(1011/2, 1011), "Window", 2, false));
 
+        blocks.add(new Block((block, params) -> {
+                Main.blockJFrame.setVisible(false);
+            return null;
+        }, BlockType.Draw, new Point(1011/2, 1011), "Close Window", 0, false));
 
         blocks.add(new Block((block, params) -> {
-            BlockDrawMove blockDrawMove = new BlockDrawMove(new Point(50, 100), 5);
+            double value1 = Double.parseDouble(String.valueOf(VariableManager.variables.get(((Block) block.getArguments().get(0)).getReturns().get(0))));
+            double value2 = Double.parseDouble(String.valueOf(VariableManager.variables.get(((Block) block.getArguments().get(1)).getReturns().get(0))));
+            BlockDrawMove blockDrawMove = new BlockDrawMove(new Point((int) value1, (int) value2), 20);
             blockDrawMove.run();
             return null;
-        }, BlockType.Draw, new Point(1011/2, 1011), "Move To", 0, false));
+        }, BlockType.Draw, new Point(1011/2, 1011), "Move To", 2, false));
 
         blocks.add(new Block((block, params) -> {
-            System.out.println();
-            BlockDrawMove blockDrawMove = new BlockDrawMove(new Point(0, 0), 5);
+            double value1 = Double.parseDouble(String.valueOf(VariableManager.variables.get(((Block) block.getArguments().get(0)).getReturns().get(0))));
+            BlockDrawMove blockDrawMove = new BlockDrawMove(new Point((int) (Main.blockDrawWindow.pen.x + value1 * Main.blockDrawWindow.direction.x), (int) (Main.blockDrawWindow.pen.y + value1 * Main.blockDrawWindow.direction.y)), 20);
             blockDrawMove.run();
             return null;
-        }, BlockType.Draw, new Point(1011/2, 1011), "Right", 0, false));
+        }, BlockType.Draw, new Point(1011/2, 1011), "Forward", 1, false));
 
     }
 }
