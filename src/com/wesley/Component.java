@@ -80,7 +80,9 @@ public class Component extends java.awt.Component {
         g2d.setColor(new Color(255, 0, 0, 125));
         g2d.fillRect(0, 0, 85, 85);
 
+        paintChecker(g2d);
         paintBlocks(g2d);
+
         AffineTransform at = new AffineTransform();
         at.scale(1, 1);
         g2d.setTransform(at);
@@ -134,10 +136,26 @@ public class Component extends java.awt.Component {
 
     }
 
-    public void paintBlocks(Graphics2D g2d) {
+    public void paintChecker(Graphics2D g2d) {
         AffineTransform at = new AffineTransform();
         at.scale(MouseListener.scale, MouseListener.scale);
         g2d.setTransform(at);
+
+        g2d.setColor(Color.GRAY.darker());
+        int boardSize = getWidth() / 5;
+
+
+        for ( int row = 0; row < boardSize; row++ )
+        {
+            for ( int col = row % 2; col < boardSize; col += 2 )
+            {
+                g2d.fillRect( row * 170 + Main.component.offset.x, col * 170 + Main.component.offset.y, 170, 170);
+            }
+        }
+    }
+
+    public void paintBlocks(Graphics2D g2d) {
+
 
         for (int i = 0; i < blockArrayList.size(); i++) {
 
