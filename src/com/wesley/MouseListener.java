@@ -113,7 +113,7 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener,
         }
     }
 
-    public Block boundsWith(Point e){
+    public static Block boundsWith(Point e){
         for (int i = 0; i < Component.blockArrayList.size(); i++) {
             BlockBlock blockBlock = Component.blockArrayList.get(i);
             for (int j = 0; j < blockBlock.getBlocks().size(); j++) {
@@ -127,7 +127,7 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener,
         return null;
     }
 
-    public boolean inBounds(Point block, Point mouse) {
+    public static boolean inBounds(Point block, Point mouse) {
         if (mouse.getY() > block.getY() - 40 && mouse.getX() > block.getX() - 40 - 20 && mouse.getX() < block.getX() + 70 - 20 && mouse.getY() < block.getY() + 70 ) return true;
         return false;
     }

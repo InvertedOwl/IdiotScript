@@ -16,6 +16,7 @@ public class Component extends java.awt.Component {
     public static ArrayList<Block> menuBlocks = new ArrayList<>();
     public static Graphics2D G2D;
     public static Point mainPoint = new Point(-100, -100);
+    public static ArrayList<Block> argumentHighlight = new ArrayList<>();
     private Point offset = new Point(0, 0);
 
     public Component () {
@@ -50,7 +51,17 @@ public class Component extends java.awt.Component {
         g2d.setColor(Color.DARK_GRAY.darker());
         if (MouseListener.selectMode) g2d.setColor(Color.DARK_GRAY.darker().darker());
 
-
+        argumentHighlight = new ArrayList<>();
+        if (getMousePosition() != null) {
+            Block boundBlock = MouseListener.boundsWith(new Point((int) ((getMousePosition().x - offset.x) * MouseListener.scale), (int) ((getMousePosition().y - offset.y) * MouseListener.scale)));
+            if (boundBlock != null) {
+                for (Object o : boundBlock.getArguments()) {
+                    if (o instanceof Block) {
+                        argumentHighlight.add((Block) o);
+                    }
+                }
+            }
+        }
 
 
         if (MouseListener.heldBlockBlock != null){
@@ -159,6 +170,7 @@ public class Component extends java.awt.Component {
 
         for (int i = 0; i < blockArrayList.size(); i++) {
 
+
             BlockBlock blockBlock = blockArrayList.get(i);
             g2d.setColor(Color.DARK_GRAY.darker());
             if (MouseListener.selectMode) g2d.setColor(Color.DARK_GRAY.darker().darker());
@@ -168,11 +180,12 @@ public class Component extends java.awt.Component {
             for (Block block : blockBlock.getBlocks()) {
 
 
-                if (block.isActive()) {
+                if (block.isActive() || argumentHighlight.contains(block)) {
                     g2d.setColor(Color.WHITE);
                     g2d.fillRoundRect((int) block.getPosition().getX() - (70/2) - 5 + offset.x, (int) block.getPosition().getY() - (70/2) - 5 + offset.y, 70 + 10, 70 + 10, 16, 16);
-
                 }
+
+
 
 
 
