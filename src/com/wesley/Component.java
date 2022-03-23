@@ -70,8 +70,25 @@ public class Component extends java.awt.Component {
                 Point point = getMousePosition();
 
                 if (point != null) {
-                    point.setLocation(((point.x + (i * 75 * MouseListener.scale)) / MouseListener.scale) - offset.x, point.y / MouseListener.scale - offset.y);
-                    block.setPosition(point);
+                    int width = 75;
+                    if (i > 0) {
+                        Block blockBefore = MouseListener.heldBlockBlock.getBlocks().get(i - 1);
+                        if (blockBefore.getType().equals(BlockType.Comment)) {
+                            FontMetrics metrics = g2d.getFontMetrics();
+                            width = metrics.stringWidth(blockBefore.getArguments().toString().replace("[", "").replace("]",""));
+                            width += 5;
+                            if (width < 75) width = 75;
+                        }
+                    }
+
+                    if (i > 0) {
+                        Block blockBefore = MouseListener.heldBlockBlock.getBlocks().get(i - 1);
+                        point.setLocation(((point.x + ((blockBefore.getPosition().x - point.x + width) * MouseListener.scale)) / MouseListener.scale) - offset.x, point.y / MouseListener.scale - offset.y);
+                        block.setPosition(point);
+                    } else {
+                        point.setLocation(((point.x + (i * width * MouseListener.scale)) / MouseListener.scale) - offset.x, point.y / MouseListener.scale - offset.y);
+                        block.setPosition(point);
+                    }
 
                 }
 
@@ -178,11 +195,22 @@ public class Component extends java.awt.Component {
             g2d.fillRoundRect((int) blockBlock.getBlocks().get(0).getPosition().getX() - (70/2) - 6 + offset.x, (int) (blockBlock.getBlocks().get(0).getPosition().getY() - (70/2)) - 6 + offset.y, (blockBlock.getBlocks().size() * 75) + 12 - 5, 70 + 12, 16, 16);
 
             for (Block block : blockBlock.getBlocks()) {
+                String comment = block.getArguments().toString().replace("[", "").replace("]","");
 
 
                 if (block.isActive() || argumentHighlight.contains(block)) {
                     g2d.setColor(Color.WHITE);
                     g2d.fillRoundRect((int) block.getPosition().getX() - (70/2) - 5 + offset.x, (int) block.getPosition().getY() - (70/2) - 5 + offset.y, 70 + 10, 70 + 10, 16, 16);
+                }
+                if (block.getType().equals(BlockType.Comment)) {
+                    int width = 70;
+                    if (block.getType().equals(BlockType.Comment)) {
+                        FontMetrics metrics = g2d.getFontMetrics();
+                        width = metrics.stringWidth(comment);
+                        if (width < 70) width = 70;
+                    }
+                    g2d.setColor(Color.DARK_GRAY.darker());
+                    g2d.fillRoundRect((int) block.getPosition().getX() - (70/2) - 5 + offset.x, (int) block.getPosition().getY() - (70/2) - 5 + offset.y, width + 10, 70 + 10, 16, 16);
                 }
 
 
@@ -200,9 +228,21 @@ public class Component extends java.awt.Component {
                 }
 
 
-                g2d.fillRoundRect((int) (block.getPosition().getX() - (70/2)) + offset.x, (int) (block.getPosition().getY() - (70/2))  + offset.y, 70, 70, 16, 16);
+                if (!block.getType().equals(BlockType.Comment)) {
+                    g2d.fillRoundRect((int) (block.getPosition().getX() - (70 / 2)) + offset.x, (int) (block.getPosition().getY() - (70 / 2)) + offset.y, 70, 70, 16, 16);
+                } else {
+                    FontMetrics metrics = g2d.getFontMetrics();
+                    int width = metrics.stringWidth(comment);
+                    if (width < 70) width = 70;
+                    g2d.fillRoundRect((int) (block.getPosition().getX() - (70 / 2)) + offset.x, (int) (block.getPosition().getY() - (70 / 2)) + offset.y, width, 70, 16, 16);
+                }
                 g2d.setColor(Color.DARK_GRAY);
-                g2d.drawString(block.getName(), (int) (block.getPosition().getX() - (70/2)) + offset.x, (int) ((int) (block.getPosition().getY() - (70/2) + 4.5 + (70/2))) + offset.y);
+
+                if (!block.getType().equals(BlockType.Comment)) {
+                    g2d.drawString(block.getName(), (int) (block.getPosition().getX() - (70 / 2)) + offset.x, (int) ((int) (block.getPosition().getY() - (70 / 2) + 4.5 + (70 / 2))) + offset.y);
+                } else {
+                    g2d.drawString(comment, (int) (block.getPosition().getX() - (70 / 2)) + offset.x, (int) ((int) (block.getPosition().getY() - (70 / 2) + 4.5 + (70 / 2))) + offset.y);
+                }
             }
         }
 

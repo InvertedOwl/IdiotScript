@@ -25,6 +25,10 @@ public class BlockList {
             return null;
         }, BlockType.Event, new Point(1011/2, 1011), "Event", 0, false));
 
+        blocks.add(new Block((block, params) -> {
+            return null;
+        }, BlockType.Comment, new Point(1011/2, 1011), "Comment", 1, true));
+
 
         Block print_var = new Block(null, BlockType.Operation, new Point(1011/2, 1011), "Print Var", 1, false);
         print_var.setActions((block, params) -> {
