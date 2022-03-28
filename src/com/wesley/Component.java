@@ -17,6 +17,7 @@ public class Component extends java.awt.Component {
     public static Graphics2D G2D;
     public static Point mainPoint = new Point(-100, -100);
     public static ArrayList<Block> argumentHighlight = new ArrayList<>();
+    public static final Color comment = Color.lightGray;
     private Point offset = new Point(0, 0);
 
     public Component () {
@@ -51,16 +52,20 @@ public class Component extends java.awt.Component {
         g2d.setColor(Color.DARK_GRAY.darker());
         if (MouseListener.selectMode) g2d.setColor(Color.DARK_GRAY.darker().darker());
 
-        argumentHighlight = new ArrayList<>();
-        if (getMousePosition() != null) {
-            Block boundBlock = MouseListener.boundsWith(new Point((int) ((getMousePosition().x - offset.x) * MouseListener.scale), (int) ((getMousePosition().y - offset.y) * MouseListener.scale)));
-            if (boundBlock != null) {
-                for (Object o : boundBlock.getArguments()) {
-                    if (o instanceof Block) {
-                        argumentHighlight.add((Block) o);
+        try {
+            argumentHighlight = new ArrayList<>();
+            if (getMousePosition() != null) {
+                Block boundBlock = MouseListener.boundsWith(new Point((int) ((getMousePosition().x - offset.x) * MouseListener.scale), (int) ((getMousePosition().y - offset.y) * MouseListener.scale)));
+                if (boundBlock != null) {
+                    for (Object o : boundBlock.getArguments()) {
+                        if (o instanceof Block) {
+                            argumentHighlight.add((Block) o);
+                        }
                     }
                 }
             }
+        } catch (NullPointerException e) {
+            System.out.printf("Was null");
         }
 
 
@@ -71,19 +76,19 @@ public class Component extends java.awt.Component {
 
                 if (point != null) {
                     int width = 75;
-                    if (i > 0) {
-                        Block blockBefore = MouseListener.heldBlockBlock.getBlocks().get(i - 1);
-                        if (blockBefore.getType().equals(BlockType.Comment)) {
-                            FontMetrics metrics = g2d.getFontMetrics();
-                            width = metrics.stringWidth(blockBefore.getArguments().toString().replace("[", "").replace("]",""));
-                            width += 5;
-                            if (width < 75) width = 75;
-                        }
-                    }
+//                    if (i > 0) {
+//                        Block blockBefore = MouseListener.heldBlockBlock.getBlocks().get(i - 1);
+//                        if (blockBefore.getType().equals(BlockType.Comment)) {
+//                            FontMetrics metrics = g2d.getFontMetrics();
+//                            width = metrics.stringWidth(blockBefore.getArguments().toString().replace("[", "").replace("]",""));
+//                            width += 5;
+//                            if (width < 75) width = 75;
+//                        }
+//                    }
 
                     if (i > 0) {
                         Block blockBefore = MouseListener.heldBlockBlock.getBlocks().get(i - 1);
-                        point.setLocation(((point.x + ((blockBefore.getPosition().x - point.x + width) * MouseListener.scale)) / MouseListener.scale) - offset.x, point.y / MouseListener.scale - offset.y);
+                        point.setLocation(((point.x + ((blockBefore.getPosition().x - point.x + width)))), point.y / MouseListener.scale - offset.y);
                         block.setPosition(point);
                     } else {
                         point.setLocation(((point.x + (i * width * MouseListener.scale)) / MouseListener.scale) - offset.x, point.y / MouseListener.scale - offset.y);
@@ -134,6 +139,7 @@ public class Component extends java.awt.Component {
                 case Trigger -> g2d.setColor(new Color(3, 190, 252));
                 case Operation -> g2d.setColor(Color.RED);
                 case Variable -> g2d.setColor(Color.CYAN);
+                case Comment -> g2d.setColor(comment);
                 case Logic -> g2d.setColor(new Color(255,105,180));
                 default -> g2d.setColor(Color.WHITE);
             }
@@ -148,6 +154,7 @@ public class Component extends java.awt.Component {
                         case Operation -> g2d.setColor(Color.RED);
                         case Variable -> g2d.setColor(Color.CYAN);
                         case Logic -> g2d.setColor(new Color(255,105,180));
+                        case Comment -> g2d.setColor(comment);
                         default -> g2d.setColor(Color.WHITE);
                     }
 
@@ -224,6 +231,8 @@ public class Component extends java.awt.Component {
                     case Operation -> g2d.setColor(Color.RED);
                     case Variable -> g2d.setColor(Color.CYAN);
                     case Logic -> g2d.setColor(new Color(255,105,180));
+                    case Comment -> g2d.setColor(Component.comment);
+
                     default -> g2d.setColor(Color.WHITE);
                 }
 
