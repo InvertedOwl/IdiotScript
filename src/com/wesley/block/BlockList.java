@@ -201,6 +201,15 @@ public class BlockList {
         }, BlockType.Variable, new Point(1011/2, 1011), "Cast Double", 1, false));
 
         blocks.add(new Block((block, params) -> {
+            Block triggerBlock = (Block) block.getArguments().get(0);
+
+            block.setWillContinue(false);
+            triggerBlock.getActions().trigger(triggerBlock);
+
+            return null;
+        }, BlockType.Logic, new Point(1011/2, 1011), "Jmp", 1, false));
+
+        blocks.add(new Block((block, params) -> {
             try {
                 double value1 = Double.parseDouble(String.valueOf(VariableManager.variables.get(((Block) block.getArguments().get(0)).getReturns().get(0))));
                 double value2 = Double.parseDouble(String.valueOf(VariableManager.variables.get(((Block) block.getArguments().get(1)).getReturns().get(0))));
@@ -222,13 +231,69 @@ public class BlockList {
         }, BlockType.Logic, new Point(1011/2, 1011), "Jmp If =", 3, false));
 
         blocks.add(new Block((block, params) -> {
-            Block triggerBlock = (Block) block.getArguments().get(0);
+            try {
+                double value1 = Double.parseDouble(String.valueOf(VariableManager.variables.get(((Block) block.getArguments().get(0)).getReturns().get(0))));
+                double value2 = Double.parseDouble(String.valueOf(VariableManager.variables.get(((Block) block.getArguments().get(1)).getReturns().get(0))));
 
-            block.setWillContinue(false);
-            triggerBlock.getActions().trigger(triggerBlock);
+                Block triggerBlock = (Block) block.getArguments().get(2);
 
+                System.out.println(VariableManager.variables);
+                System.out.println("Value1: " + value1 + ", Value2: " + value2);
+                if (value1 != value2) {
+                    block.setWillContinue(false);
+                    triggerBlock.getActions().trigger(triggerBlock);
+                    System.out.println("They are not equal");
+                }
+            }
+            catch (Exception ignored){
+
+            }
             return null;
-        }, BlockType.Logic, new Point(1011/2, 1011), "Jmp", 1, false));
+        }, BlockType.Logic, new Point(1011/2, 1011), "Jmp If !=", 3, false));
+
+        blocks.add(new Block((block, params) -> {
+            try {
+                double value1 = Double.parseDouble(String.valueOf(VariableManager.variables.get(((Block) block.getArguments().get(0)).getReturns().get(0))));
+                double value2 = Double.parseDouble(String.valueOf(VariableManager.variables.get(((Block) block.getArguments().get(1)).getReturns().get(0))));
+
+                Block triggerBlock = (Block) block.getArguments().get(2);
+
+                System.out.println(VariableManager.variables);
+                System.out.println("Value1: " + value1 + ", Value2: " + value2);
+                if (value1 > value2) {
+                    block.setWillContinue(false);
+                    triggerBlock.getActions().trigger(triggerBlock);
+                    System.out.println("They are not equal");
+                }
+            }
+            catch (Exception ignored){
+
+            }
+            return null;
+        }, BlockType.Logic, new Point(1011/2, 1011), "Jmp If >", 3, false));
+
+        blocks.add(new Block((block, params) -> {
+            try {
+                double value1 = Double.parseDouble(String.valueOf(VariableManager.variables.get(((Block) block.getArguments().get(0)).getReturns().get(0))));
+                double value2 = Double.parseDouble(String.valueOf(VariableManager.variables.get(((Block) block.getArguments().get(1)).getReturns().get(0))));
+
+                Block triggerBlock = (Block) block.getArguments().get(2);
+
+                System.out.println(VariableManager.variables);
+                System.out.println("Value1: " + value1 + ", Value2: " + value2);
+                if (value1 < value2) {
+                    block.setWillContinue(false);
+                    triggerBlock.getActions().trigger(triggerBlock);
+                    System.out.println("They are not equal");
+                }
+            }
+            catch (Exception ignored){
+
+            }
+            return null;
+        }, BlockType.Logic, new Point(1011/2, 1011), "Jmp If <", 3, false));
+
+
 
 
         blocks.add(new Block((block, params) -> null, BlockType.Operation, new Point(1011/2, 1011), "NoOp", 0, false));
@@ -291,7 +356,7 @@ public class BlockList {
 
         blocks.add(new Block((block, params) -> {
             double value1 = Double.parseDouble(String.valueOf(VariableManager.variables.get(((Block) block.getArguments().get(0)).getReturns().get(0))));
-            BlockDrawMove blockDrawMove = new BlockDrawMove(new Point((int) (Main.blockDrawWindow.pen.x + value1 * Main.blockDrawWindow.direction.x), (int) (Main.blockDrawWindow.pen.y + value1 * Main.blockDrawWindow.direction.y)), 20);
+            BlockDrawMove blockDrawMove = new BlockDrawMove(new Point((int) (Main.blockDrawWindow.pen.x + value1 * Main.blockDrawWindow.direction.x), (int) (Main.blockDrawWindow.pen.y + value1 * Main.blockDrawWindow.direction.y)), 50);
             blockDrawMove.run();
             return null;
         }, BlockType.Draw, new Point(1011/2, 1011), "Forward", 1, false));
