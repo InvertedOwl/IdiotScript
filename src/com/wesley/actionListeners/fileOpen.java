@@ -78,7 +78,7 @@ public class fileOpen implements ActionListener {
 
                     ArrayList<Object> objectArrayList = new ArrayList<Object>();
                     for (String arg : args) {
-//                        arg = arg.replace(" ", "");
+                        arg = arg.replace("`", "");
                         if (!arg.startsWith("!block")) objectArrayList.add(arg);
                         else {
                             try {

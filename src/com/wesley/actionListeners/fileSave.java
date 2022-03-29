@@ -56,10 +56,21 @@ public class fileSave implements ActionListener {
                             int place = arguments.indexOf(o);
                             arguments.add(place, "!block" + blockToIntMap.get(o));
                             arguments.remove(o);
+
                         }
                     }
 
-                    writer.write(block.getName() + "/" + arguments + "\n");
+                    if (arguments.size() > 0) {
+                        if (String.valueOf(arguments.get(0)).startsWith("!block")) writer.write(block.getName() + "/" + arguments + "\n");
+                        else writer.write(block.getName() + "/[`" + arguments.get(0) + "`]\n");
+                    } else {
+                        writer.write(block.getName() + "/[]\n");
+
+                    }
+
+
+
+
                     line ++;
 
 

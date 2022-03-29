@@ -19,10 +19,10 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener,
     private Point mouse;
     public static boolean dragBoard;
     public static float scale = 1;
-    public static int xOffset = 0;
-    public static int yOffset = 0;
-    public static int mouseXStrt;
-    public static int mouseYStrt;
+    public static double xOffset = 0;
+    public static double yOffset = 0;
+    public static double mouseXStrt;
+    public static double mouseYStrt;
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -47,7 +47,7 @@ public class MouseListener implements java.awt.event.MouseListener, KeyListener,
                 heldBlockBlock = blockBlock;
             }
         }
-        Point mouse = new Point((int) (Main.component.getMousePosition().x / scale) - MouseListener.xOffset, (int) (Main.component.getMousePosition().y / scale) - MouseListener.yOffset);
+        Point mouse = new Point((int) ((Main.component.getMousePosition().x / scale) - MouseListener.xOffset), (int) ((Main.component.getMousePosition().y / scale) - MouseListener.yOffset));
         this.mouse = mouse;
 
 

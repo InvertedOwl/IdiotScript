@@ -8,6 +8,7 @@ import com.wesley.block.BlockType;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Line2D;
 import java.util.ArrayList;
 
 public class Component extends java.awt.Component {
@@ -69,6 +70,7 @@ public class Component extends java.awt.Component {
         }
 
 
+
         if (MouseListener.heldBlockBlock != null){
             for (int i = 0; i < MouseListener.heldBlockBlock.getBlocks().size(); i++) {
                 Block block = MouseListener.heldBlockBlock.getBlocks().get(i);
@@ -102,23 +104,47 @@ public class Component extends java.awt.Component {
         }
 
         if (MouseListener.dragBoard && getMousePosition() != null) {
-            offset.x = getMousePosition().x + MouseListener.xOffset - MouseListener.mouseXStrt + 8;
-            offset.y = getMousePosition().y + MouseListener.yOffset - MouseListener.mouseYStrt + 54;
+            offset.x = (int) ((getMousePosition().x + MouseListener.xOffset - MouseListener.mouseXStrt + 8));
+            offset.y = (int) ((getMousePosition().y + MouseListener.yOffset - MouseListener.mouseYStrt + 54)
+            );
         } else if (getMousePosition() != null){
-            MouseListener.xOffset = offset.x;
-            MouseListener.yOffset = offset.y;
+            MouseListener.xOffset = (int) (offset.x );
+            MouseListener.yOffset = (int) (offset.y );
         }
 
 
-        g2d.setColor(new Color(255, 0, 0, 125));
-        g2d.fillRect(0, 0, 85, 85);
+
 
         paintChecker(g2d);
+        for (BlockBlock blockBlock : blockArrayList) {
+            for (Block block : blockBlock.getBlocks()) {
+                if (block.getType().equals(BlockType.Logic) && block.getNumArguments() > 0) {
+                    for (Object blockArgs : block.getArguments()){
+                        if (blockArgs instanceof Block) {
+                            Block blockArg = (Block) blockArgs;
+                            if (blockArg.getType().equals(BlockType.Trigger)) {
+                                Line2D line2D = new Line2D.Double((int) ((block.getPosition().x + offset.x)), (int) ((block.getPosition().y + offset.y)),
+                                        (int) ((blockArg.getPosition().x + offset.x)), (int) ((blockArg.getPosition().y + offset.y)));
+
+                                g2d.setStroke(new BasicStroke(12f, BasicStroke.CAP_SQUARE, BasicStroke.JOIN_ROUND));
+                                g2d.setColor(new Color(255, 0, 0, 125));
+                                g2d.draw(line2D);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         paintBlocks(g2d);
 
         AffineTransform at = new AffineTransform();
         at.scale(1, 1);
         g2d.setTransform(at);
+        g2d.setColor(new Color(255, 0, 0, 125));
+        g2d.fillRect(0, 0, 85, 85);
+
+
 
         paintBlockMenu(g2d);
         paintConsole(g2d);
