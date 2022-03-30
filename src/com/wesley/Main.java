@@ -5,6 +5,9 @@ import com.wesley.block.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Random;
@@ -17,6 +20,7 @@ public class Main {
     public static BlockDrawWindow blockDrawWindow;
     public static JFrame blockJFrame;
     public static Font font;
+    public static fileSave instance;
 
     public static void main(String[] args) {
         BlockList.initilizeBlocks();
@@ -43,6 +47,21 @@ public class Main {
         frame.addMouseWheelListener(mouseListener);
         ConsoleManager.addToConsole("", null);
         Main.component = render;
+
+        WindowListener exitListener = new WindowAdapter() {
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                int confirm = JOptionPane.showOptionDialog(
+                        null, "Would you like to save before you exit?",
+                        "Exit Confirmation", JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE, null, null, null);
+                if (confirm == 0) {
+                    instance.actionPerformed(null);
+                }
+            }
+        };
+        frame.addWindowListener(exitListener);
 
 
         try {
@@ -95,7 +114,9 @@ public class Main {
 
         JMenuItem saveItem = new JMenuItem("Save Board");
         fileMenu.add(saveItem);
-        saveItem.addActionListener(new fileSave());
+        fileSave save = new fileSave();
+        Main.instance = save;
+        saveItem.addActionListener(save);
 
         return fileMenu;
     }
