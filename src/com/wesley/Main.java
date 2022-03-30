@@ -5,6 +5,8 @@ import com.wesley.block.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.Random;
 
 
@@ -14,6 +16,7 @@ public class Main {
     public static int speed = 250;
     public static BlockDrawWindow blockDrawWindow;
     public static JFrame blockJFrame;
+    public static Font font;
 
     public static void main(String[] args) {
         BlockList.initilizeBlocks();
@@ -41,12 +44,24 @@ public class Main {
         ConsoleManager.addToConsole("", null);
         Main.component = render;
 
+
+        try {
+            GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+            Font font = Font.createFont(Font.TRUETYPE_FONT, new File("src/com/wesley/Comfortaa-VariableFont_wght.ttf"));
+            Main.font = font;
+
+            ge.registerFont(font);
+        } catch (IOException | FontFormatException e) {
+            ConsoleManager.addToConsole("Font not found");
+            System.out.println("Font not found");
+
+        }
+
         frame.setVisible(true);
         frame.paint(frame.getGraphics());
         frame.repaint();
         render.paint(frame.getGraphics());
         render.repaint();
-
 
 
 

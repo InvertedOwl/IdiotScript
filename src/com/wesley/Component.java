@@ -9,6 +9,8 @@ import com.wesley.block.BlockType;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Line2D;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Component extends java.awt.Component {
@@ -22,6 +24,8 @@ public class Component extends java.awt.Component {
     private Point offset = new Point(0, 0);
 
     public Component () {
+
+
         for (BlockType type : BlockType.values()) {
             for (Block block : BlockList.blocks) {
                 if (block.getType().equals(type)){
@@ -33,9 +37,11 @@ public class Component extends java.awt.Component {
     }
 
     public void paint(Graphics graphics) {
+
         Graphics2D g2d = (Graphics2D) graphics;
         Component.G2D = g2d;
         g2d.setStroke(new BasicStroke(1.0F, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+        g2d.setFont(new Font(Main.font.getName(), Font.BOLD, 15));
 
         g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -261,6 +267,8 @@ public class Component extends java.awt.Component {
 
                     default -> g2d.setColor(Color.WHITE);
                 }
+
+
 
 
                 if (!block.getType().equals(BlockType.Comment)) {
